@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>QuitSmart Admin</title>
+<link rel="icon" type="image/png" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#0a0a0a; --muted:#525252; --paper:#f5f5f4; --card:#fff; --bar:#059669; --bar-hi:#047857; --grid:#e5e5e5; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Exo 2', system-ui, sans-serif; background:var(--paper); color:var(--ink);
+         background-image: radial-gradient(rgba(10,10,10,.06) 1.2px, transparent 1.2px); background-size: 14px 14px; }
+  header { position:sticky; top:0; z-index:5; background:#fff; border-bottom:3px solid var(--ink); }
+  .wrap { max-width:960px; margin:0 auto; padding:14px 16px; }
+  header .wrap { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight:900; text-transform:uppercase; letter-spacing:-.02em; }
+  .logo span.mark { width:36px; height:36px; border-radius:10px; background:#059669; border:2px solid var(--ink); box-shadow:2px 2px 0 var(--ink); display:grid; place-items:center; }
+  .tag { display:inline-block; font-size:11px; font-weight:900; text-transform:uppercase; padding:3px 8px; border:2px solid var(--ink); border-radius:7px; background:#fde047; }
+  .card { background:var(--card); border:3px solid var(--ink); border-radius:18px; box-shadow:5px 5px 0 var(--ink); padding:16px; }
+  .btn { font:inherit; font-weight:900; text-transform:uppercase; font-size:12px; padding:9px 14px; border:2px solid var(--ink); border-radius:12px; box-shadow:3px 3px 0 var(--ink); cursor:pointer; background:#fff; }
+  .btn:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .btn.go { background:#34d399; } .btn.y { background:#fde047; } .btn[disabled] { opacity:.5; cursor:default; }
+  input { font:inherit; font-weight:700; width:100%; padding:11px 12px; border:2px solid var(--ink); border-radius:12px; background:#fafafa; }
+  .muted { color:var(--muted); font-size:13px; }
+  .err { color:#be123c; font-weight:800; font-size:13px; }
+  h1 { font-size:22px; text-transform:uppercase; margin:0 0 4px; } h2 { font-size:15px; text-transform:uppercase; margin:0 0 2px; }
+  .grid { display:grid; gap:16px; grid-template-columns: minmax(0, 1fr); } .grid > * { min-width:0; } .tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .two { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+  .tile { padding:14px; } .tile .k { font-size:11px; font-weight:900; text-transform:uppercase; color:var(--muted); } .tile .v { font-size:32px; font-weight:900; line-height:1.1; font-variant-numeric:tabular-nums; } .tile .s { font-size:12px; color:var(--muted); font-weight:700; }
+  .chart { position:relative; } svg text { font-family:'Exo 2', system-ui, sans-serif; }
+  .tip { position:fixed; pointer-events:none; background:var(--ink); color:#fff; font-size:12px; font-weight:800; padding:6px 9px; border-radius:8px; display:none; z-index:20; }
+  table { width:100%; border-collapse:collapse; font-size:13px; } th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--grid); } th { font-size:11px; text-transform:uppercase; color:var(--muted); }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; font-weight:800; }
+  #who-email { max-width:42vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  td, th { white-space:nowrap; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; }
+  @media (max-width: 560px) { #who-email { display:none; } .wrap { padding-left:12px; padding-right:12px; } .tile .v { font-size:26px; } }
+  .hidden { display:none !important; }
+  .note { font-size:12px; color:var(--muted); border-left:4px solid #fde047; padding:6px 10px; background:#fffbea; border-radius:6px; }
+  details summary { cursor:pointer; font-weight:900; font-size:12px; text-transform:uppercase; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="logo"><span class="mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9"/><path d="M12 13c-3.5 0-6-2.5-6-6 3.5 0 6 2.5 6 6z"/><path d="M12 10c3.5 0 6-2.5 6-6-3.5 0-6 2.5-6 6z"/></svg></span>QuitSmart <span class="tag">Admin</span></div>
+  <div id="who" class="row hidden"><span id="who-email" class="muted"></span><button class="btn" onclick="signOut()">Sign out</button></div>
+</div></header>
+
+<main class="wrap" style="padding-top:22px; padding-bottom:60px">
+  <!-- Sign in -->
+  <section id="signin" class="card" style="max-width:440px; margin:20px auto" >
+    <h1>Admin sign in</h1>
+    <p class="muted">Totals only. This page never shows anyone's email, journal or progress.</p>
+    <div id="step-email">
+      <label class="muted" for="em" style="font-weight:900;text-transform:uppercase;font-size:11px">Admin email</label>
+      <input id="em" type="email" autocomplete="email" placeholder="you@example.com">
+      <div style="margin-top:12px"><button id="send" class="btn go" onclick="sendCode()">Email me a code</button></div>
+    </div>
+    <div id="step-code" class="hidden">
+      <p class="muted">Enter the code we emailed (or tap the link in it on this device).</p>
+      <input id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="12345678" style="text-align:center;font-size:24px;letter-spacing:.3em">
+      <div class="row" style="margin-top:12px"><button id="verify" class="btn go" onclick="verify()">Sign in</button><button class="btn" onclick="show('email')">Change email</button></div>
+    </div>
+    <p id="si-err" class="err"></p>
+  </section>
+
+  <!-- Dashboard -->
+  <section id="dash" class="hidden grid">
+    <div class="row">
+      <div><h1>Overview</h1><p id="gen" class="muted" style="margin:0"></p></div>
+      <div class="actions"><button class="btn y" onclick="load()">↻ Refresh</button><button class="btn" onclick="exportCsv()">⬇ Export CSV</button></div>
+    </div>
+    <div class="grid tiles">
+      <div class="card tile"><div class="k">Accounts</div><div class="v" id="t-acc">–</div><div class="s" id="t-acc7"></div></div>
+      <div class="card tile"><div class="k">Active · 7 days</div><div class="v" id="t-a7">–</div><div class="s" id="t-a30"></div></div>
+      <div class="card tile"><div class="k">Quit (smoke-free)</div><div class="v" id="t-free">–</div><div class="s" id="t-prep"></div></div>
+      <div class="card tile"><div class="k">Friends invited</div><div class="v" id="t-inv">–</div><div class="s" id="t-invs"></div></div>
+      <div class="card tile"><div class="k">Research participants</div><div class="v" id="t-res">–</div><div class="s">anonymous, opt-in</div></div>
+    </div>
+    <div class="card chart"><h2>New accounts per week</h2><p class="muted" style="margin:0 0 8px">Last 12 weeks · week starting Monday</p><div id="c-weekly"></div></div>
+    <div class="grid two">
+      <div class="card chart"><h2>Days smoke-free</h2><p class="muted" style="margin:0 0 8px">People who have quit, by days since quitting</p><div id="c-days"></div></div>
+      <div class="card chart"><h2>Prep plan progress</h2><p class="muted" style="margin:0 0 8px">Plan days completed (0–6), all synced users</p><div id="c-plan"></div></div>
+    </div>
+    <div class="card">
+      <h2>Research summary</h2>
+      <p class="muted" style="margin:0 0 8px">Latest anonymous snapshot per participant. Groups smaller than 5 people are hidden.</p>
+      <div id="research"></div>
+    </div>
+    <details class="card"><summary>Data tables (for screen readers &amp; checking numbers)</summary><div id="tables" style="margin-top:10px"></div></details>
+    <p class="note">Counts include only people who chose to sign in. Everyone using QuitSmart without an account stays fully on their own phone and isn't counted here.</p>
+  </section>
+</main>
+<div id="tip" class="tip"></div>
+
+<script>
+(function () {
+const CLOUD = { url: 'https://urqemcxaafcwznnvxpyv.supabase.co', key: 'sb_publishable_aRfdKqIgsKMDJ2LFrr7q5g_oqMcxHPa' };
+const KEY = 'quitsmart_admin_auth_v1';
+const $ = id => document.getElementById(id);
+let A = null; try { A = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+let DATA = null, email = '';
+const save = () => { try { A ? localStorage.setItem(KEY, JSON.stringify(A)) : localStorage.removeItem(KEY); } catch (e) {} };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function call(path, opts) {
+  opts = opts || {};
+  const h = { apikey: CLOUD.key, 'Content-Type': 'application/json' };
+  if (opts.auth) h.Authorization = 'Bearer ' + A.access_token;
+  let r; try { r = await fetch(CLOUD.url + path, { method: opts.method || 'GET', headers: h, body: opts.body ? JSON.stringify(opts.body) : undefined }); }
+  catch (e) { throw new Error('Offline or blocked. Check your connection.'); }
+  const t = await r.text(); let j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
+  if (!r.ok) { const e = new Error((j && (j.msg || j.message || j.error_description)) || ('Error ' + r.status)); e.status = r.status; e.code = j && j.code; throw e; }
+  return j;
+}
+function setSession(j) { A = { access_token: j.access_token, refresh_token: j.refresh_token, expires_at: j.expires_at || Math.floor(Date.now() / 1000) + (j.expires_in || 3600), email: (j.user && j.user.email) || email }; save(); }
+async function ensure() {
+  if (A.expires_at * 1000 > Date.now() + 60000) return;
+  setSession(await call('/auth/v1/token?grant_type=refresh_token', { method: 'POST', body: { refresh_token: A.refresh_token } }));
+}
+window.show = function (step) { $('step-email').classList.toggle('hidden', step !== 'email'); $('step-code').classList.toggle('hidden', step !== 'code'); $('si-err').textContent = ''; };
+window.sendCode = async function () {
+  email = $('em').value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { $('si-err').textContent = 'Enter a valid email.'; return; }
+  $('send').disabled = true;
+  try { await call('/auth/v1/otp?redirect_to=' + encodeURIComponent(location.origin + '/admin/'), { method: 'POST', body: { email, create_user: false } }); show('code'); }
+  catch (e) { $('si-err').textContent = /not found|signups not allowed|otp_disabled/i.test(e.message) ? 'No QuitSmart account uses that email. Sign in once in the app first.' : e.message; }
+  $('send').disabled = false;
+};
+window.verify = async function () {
+  const token = $('code').value.trim(); if (token.length < 6) { $('si-err').textContent = 'Enter the full code.'; return; }
+  $('verify').disabled = true;
+  try { setSession(await call('/auth/v1/verify', { method: 'POST', body: { type: 'email', email, token } })); await enter(); }
+  catch (e) { $('si-err').textContent = /expired|invalid/i.test(e.message) ? 'That code is wrong or expired.' : e.message; }
+  $('verify').disabled = false;
+};
+window.signOut = async function () { try { await call('/auth/v1/logout', { method: 'POST', auth: true }); } catch (e) {} A = null; save(); location.reload(); };
+
+async function enter() {
+  try { await load(); $('signin').classList.add('hidden'); $('dash').classList.remove('hidden'); $('who').classList.remove('hidden'); $('who-email').textContent = A.email || ''; }
+  catch (e) {
+    if (e.code === '42501' || /not authorized/i.test(e.message)) { $('si-err').textContent = 'Signed in, but this email is not an admin. Add it to app_admins in Supabase.'; }
+    else $('si-err').textContent = e.message;
+    $('signin').classList.remove('hidden'); $('dash').classList.add('hidden');
+  }
+}
+window.load = async function () {
+  await ensure();
+  DATA = await call('/rest/v1/rpc/admin_stats', { method: 'POST', body: {}, auth: true });
+  render(DATA);
+};
+
+/* ---------- charts: single-series bars, one hue, hover tooltips ---------- */
+const tip = $('tip');
+function bars(el, rows, label) {
+  const W = 640, H = 220, padL = 34, padB = 34, padT = 14, max = Math.max(1, ...rows.map(r => r.n));
+  const step = Math.pow(10, Math.floor(Math.log10(max))), nice = Math.ceil(max / step) * step, ticks = [0, nice / 2, nice];
+  const bw = (W - padL - 8) / rows.length, y = v => padT + (H - padT - padB) * (1 - v / nice);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="${esc(label)}">`;
+  ticks.forEach(t => { s += `<line x1="${padL}" x2="${W - 4}" y1="${y(t)}" y2="${y(t)}" stroke="#e5e5e5" stroke-width="1"/><text x="${padL - 6}" y="${y(t) + 4}" text-anchor="end" font-size="11" fill="#525252">${Math.round(t)}</text>`; });
+  rows.forEach((r, i) => {
+    const x = padL + i * bw + 3, w = Math.max(4, bw - 6), top = y(r.n), h = Math.max(0, y(0) - top);
+    s += `<g class="b" data-t="${esc(r.label)}: ${r.n}">`
+      + `<rect x="${x - 3}" y="${padT}" width="${bw}" height="${H - padT - padB}" fill="transparent"/>`
+      + (h > 0 ? `<path d="M${x},${y(0)} V${top + 4} Q${x},${top} ${x + 4},${top} H${x + w - 4} Q${x + w},${top} ${x + w},${top + 4} V${y(0)} Z" fill="#059669"/>` : '')
+      + `<text x="${x + w / 2}" y="${H - padB + 16}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#525252">${esc(r.short || r.label)}</text></g>`;
+  });
+  s += `<line x1="${padL}" x2="${W - 4}" y1="${y(0)}" y2="${y(0)}" stroke="#0a0a0a" stroke-width="1.5"/></svg>`;
+  el.innerHTML = s;
+  el.querySelectorAll('g.b').forEach(g => {
+    g.addEventListener('mousemove', e => { tip.style.display = 'block'; tip.textContent = g.dataset.t; tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY - 30) + 'px'; g.querySelector('path') && g.querySelector('path').setAttribute('fill', '#047857'); });
+    g.addEventListener('mouseleave', () => { tip.style.display = 'none'; g.querySelector('path') && g.querySelector('path').setAttribute('fill', '#059669'); });
+    g.addEventListener('click', e => { tip.style.display = 'block'; tip.textContent = g.dataset.t; tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY - 30) + 'px'; setTimeout(() => tip.style.display = 'none', 1600); });
+  });
+}
+function table(title, cols, rows) {
+  return `<h2 style="margin-top:12px">${esc(title)}</h2><div style="overflow-x:auto"><table><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((v, i) => `<td class="${typeof v === 'number' || /^[0-9.]+%?$/.test(String(v)) ? 'n' : ''}">${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+const fmtWeek = w => new Date(w + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+function render(d) {
+  $('gen').textContent = 'Updated ' + new Date(d.generated_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+  $('t-acc').textContent = d.accounts_total; $('t-acc7').textContent = '+' + d.accounts_7d + ' in the last 7 days';
+  $('t-a7').textContent = d.active_7d; $('t-a30').textContent = d.active_30d + ' active in 30 days · ' + d.synced_total + ' synced';
+  $('t-free').textContent = d.phase_free; $('t-prep').textContent = d.phase_prep + ' still preparing';
+  $('t-inv').textContent = d.invites_joined; $('t-invs').textContent = 'joined via ' + d.inviters + ' inviter' + (d.inviters === 1 ? '' : 's');
+  $('t-res').textContent = d.research_people;
+  const weekly = d.signups_weekly.map(w => ({ label: 'Week of ' + fmtWeek(w.week), short: fmtWeek(w.week), n: w.n }));
+  const days = d.days_free_bands.map(b => ({ label: b.band + ' days', short: b.band, n: b.n }));
+  const plan = d.plan_days_dist.map(p => ({ label: p.days + ' of 6 days', short: String(p.days), n: p.n }));
+  bars($('c-weekly'), weekly, 'New accounts per week'); bars($('c-days'), days, 'Days smoke-free'); bars($('c-plan'), plan, 'Plan days completed');
+  const rs = d.research_summary || [];
+  $('research').innerHTML = rs.length
+    ? table('', ['Age', 'Gender', 'Stage', 'Days free', 'People', 'Avg cravings', '% passed', 'Avg slips', 'Top tool'],
+        rs.map(r => [r.age_band, String(r.gender).replace('_', ' '), r.phase, r.days_free_band || '–', r.people, r.avg_cravings, r.pct_cravings_passed == null ? '–' : r.pct_cravings_passed + '%', r.avg_slips, r.most_used_tool || '–'])).replace('<h2 style="margin-top:12px"></h2>', '')
+    : `<p class="muted">No group has 5 or more participants yet (${d.research_people} participant${d.research_people === 1 ? '' : 's'} so far).</p>`;
+  $('tables').innerHTML = table('New accounts per week', ['Week', 'Accounts'], weekly.map(r => [r.label, r.n]))
+    + table('Days smoke-free', ['Band', 'People'], days.map(r => [r.label, r.n]))
+    + table('Plan days completed', ['Days', 'People'], plan.map(r => [r.label, r.n]));
+}
+window.exportCsv = function () {
+  if (!DATA) return;
+  const d = DATA, L = [['section', 'key', 'value']];
+  ['accounts_total', 'accounts_7d', 'synced_total', 'active_7d', 'active_30d', 'phase_free', 'phase_prep', 'invites_joined', 'inviters', 'research_people'].forEach(k => L.push(['totals', k, d[k]]));
+  d.signups_weekly.forEach(w => L.push(['signups_weekly', w.week, w.n]));
+  d.days_free_bands.forEach(b => L.push(['days_free', b.band, b.n]));
+  d.plan_days_dist.forEach(p => L.push(['plan_days', p.days, p.n]));
+  (d.research_summary || []).forEach(r => L.push(['research', [r.age_band, r.gender, r.phase, r.days_free_band].join('|'), r.people]));
+  const csv = L.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'quitsmart-stats-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+};
+
+/* email-link sign-in lands here with tokens in the address */
+(async function start() {
+  const h = new URLSearchParams((location.hash || '').slice(1));
+  if (h.get('access_token')) {
+    history.replaceState(null, '', location.pathname);
+    A = { access_token: h.get('access_token') };
+    try { const u = await call('/auth/v1/user', { auth: true }); setSession({ access_token: h.get('access_token'), refresh_token: h.get('refresh_token'), expires_in: +h.get('expires_in') || 3600, user: u }); }
+    catch (e) { A = null; save(); }
+  }
+  if (A && A.refresh_token) await enter();
+})();
+})();
+</script>
+</body>
+</html>
