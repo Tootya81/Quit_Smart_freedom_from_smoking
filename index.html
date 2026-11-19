@@ -82,9 +82,9 @@
             .chip   { @apply px-2.5 py-1 rounded-lg text-xs font-extrabold uppercase border border-neutral-950 dark:border-neutral-600 transition cursor-pointer; }
             .chip-on{ @apply bg-yellow-300 text-neutral-950 border-neutral-950; }
             .chip-off{ @apply bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-yellow-100 hover:text-neutral-950; }
-            .stat   { @apply text-neutral-950 border-2 border-neutral-950 rounded-xl p-3 text-center; }
-            .stat-k { @apply block text-[10px] font-black uppercase tracking-wider opacity-80; }
-            .stat-v { @apply block text-base sm:text-lg font-black tabular-nums mt-0.5; }
+            .stat   { @apply text-neutral-950 border-2 border-neutral-950 rounded-xl p-3 text-center flex flex-col justify-between min-w-0; }
+            .stat-k { @apply flex items-center justify-center text-[10px] font-black uppercase tracking-wider opacity-80 leading-tight min-h-[2.5em]; }
+            .stat-v { @apply block text-[15px] sm:text-lg font-black tabular-nums mt-1 leading-tight whitespace-nowrap overflow-hidden text-ellipsis; }
             .row    { @apply flex items-center justify-between gap-2; }
             .well   { @apply p-3 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800; }
             .bar    { @apply w-full h-3 rounded-full bg-neutral-200 dark:bg-neutral-800 border-2 border-neutral-950 overflow-hidden; }
@@ -611,7 +611,7 @@
                 <button type="button" data-tab="plan" onclick="switchTab('plan')" class="nav-tab"><span class="text-xl leading-none">🗺️</span><span>Plan</span></button>
                 <button type="button" id="sos-fab" data-tab="sos" onclick="switchTab('sos')" class="justify-self-center -mt-7 w-[4.25rem] h-[4.25rem] rounded-full bg-rose-500 hover:bg-rose-400 text-white border-[3px] border-neutral-950 font-black uppercase text-xs cursor-pointer flex flex-col items-center justify-center leading-none shadow-[3px_3px_0px_#0a0a0a]" title="Craving SOS" aria-label="Craving SOS"><span class="text-xl">🛟</span>SOS</button>
                 <button type="button" data-tab="journal" onclick="switchTab('journal')" class="nav-tab"><span class="text-xl leading-none">✍️</span><span>Journal</span></button>
-                <button type="button" data-tab="rewards" onclick="switchTab(lastRewardsTab)" class="nav-tab"><span class="text-xl leading-none">🏆</span><span>Rewards</span></button>
+                <button type="button" data-tab="rewards" onclick="openRewards()" class="nav-tab"><span class="text-xl leading-none">🏆</span><span>Rewards</span></button>
             </div>
         </nav>
     </div>
@@ -1162,6 +1162,7 @@ window.migrateV2 = function () {
 /* ===================== APP SHELL ===================== */
 const TABS = ['home', 'plan', 'sos', 'journal', 'body', 'quest', 'medals'];
 let lastRewardsTab = 'medals';
+window.openRewards = () => switchTab(lastRewardsTab);
 
 function enterApp() {
     S = normalize(S); rollover(); save();
@@ -1213,7 +1214,7 @@ function tick() {
     const timer = $('live-timer-display');
     if (timer) {
         timer.textContent = sn.days + 'd ' + pad(sn.h) + 'h ' + pad(sn.m) + 'm ' + pad(sn.s) + 's';
-        $('stat-money-saved').textContent = money(sn.saved, true);
+        $('stat-money-saved').textContent = money(sn.saved, sn.saved < 1000);
         $('stat-cigs-avoided').textContent = Math.floor(sn.cigs).toLocaleString();
         $('stat-life-saved').textContent = sn.lifeH >= 48 ? (sn.lifeH / 24).toFixed(1) + ' days' : sn.lifeH.toFixed(1) + ' hrs';
     }
@@ -4489,6 +4490,42 @@ function qmCloud(x, y, sc, fill, line) {
         <path d="M-12,-6 c4,2 4,8 -1,9 M12,-8 c3,3 2,8 -3,9 M30,0 c-2,3 -6,4 -9,2" fill="none" stroke="${line}" stroke-width=".9" stroke-linecap="round"/></g>`;
 }
 function qmBird(x, y, s) { return `<path d="M${x - 5 * s},${y} q${2.5 * s},${-3 * s} ${5 * s},0 q${2.5 * s},${-3 * s} ${5 * s},0" fill="none" stroke="${QS}" stroke-width="1" stroke-linecap="round"/>`; }
+
+/* traditional motifs */
+function qmPeacock(x, y, sc, flip) {
+    const f = flip ? -1 : 1;
+    let t = `<g transform="translate(${x},${y}) scale(${sc * f},${sc})">`;
+    t += `<path d="M-2,2 C-14,6 -30,12 -44,22 C-30,22 -14,14 -1,7Z" fill="#1f6b4f" stroke="${QS}" stroke-width=".7"/>`;
+    [[-14, 9], [-23, 13], [-32, 17], [-40, 20]].forEach(([ex, ey]) => t += `<ellipse cx="${ex}" cy="${ey}" rx="2.4" ry="1.7" fill="${QG}" stroke="${QS}" stroke-width=".4"/><circle cx="${ex}" cy="${ey}" r=".9" fill="#1d3f9e"/>`);
+    t += `<ellipse cx="2" cy="-1" rx="7.5" ry="5" fill="#1d4ed8" stroke="${QS}" stroke-width=".7"/>`;
+    t += `<path d="M-3,-2 q4,-3 9,0" fill="none" stroke="#7aa6f0" stroke-width=".8"/>`;
+    t += `<path d="M6,-3 C9,-9 8,-14 10,-19" fill="none" stroke="#1d4ed8" stroke-width="3.4" stroke-linecap="round"/>`;
+    t += `<circle cx="10.6" cy="-20" r="2.5" fill="#1d4ed8" stroke="${QS}" stroke-width=".6"/><path d="M12.8,-20.4 l3,1 -3,.9Z" fill="${QG}"/><circle cx="11.2" cy="-20.6" r=".55" fill="#fff"/>`;
+    t += `<path d="M10,-22 l-1,-5 M10.8,-22 l.4,-5.4 M11.6,-22 l1.6,-5" stroke="${QS}" stroke-width=".6"/><circle cx="9" cy="-27.2" r=".9" fill="#1d4ed8"/><circle cx="11.2" cy="-27.6" r=".9" fill="#1d4ed8"/><circle cx="13.3" cy="-27.1" r=".9" fill="#1d4ed8"/>`;
+    t += `<path d="M0,3.5 v7 M4,3.5 v7" stroke="${QS}" stroke-width="1"/>`;
+    return t + '</g>';
+}
+function qmPavilion(x, y, sc) {
+    return `<g transform="translate(${x},${y}) scale(${sc})" stroke="${QS}" stroke-width=".8">
+        <rect x="-18" y="-3" width="36" height="5" fill="#efe4cf"/><rect x="-21" y="2" width="42" height="4" fill="#d8c8a8"/>
+        ${[-14, -5, 5, 14].map(px => `<rect x="${px - 1.6}" y="-20" width="3.2" height="17" fill="#f7f0e2"/>`).join('')}
+        <path d="M-14,-20 q4.5,-5 9,0 q5,-5 10,0 q4.5,-5 9,0" fill="none" stroke-width=".7"/>
+        <rect x="-19" y="-23" width="38" height="3.4" fill="#efe4cf"/>
+        <path d="M-15,-23 Q-15,-40 0,-44 Q15,-40 15,-23Z" fill="#f7f0e2"/><path d="M-10,-27 Q0,-36 10,-27" fill="none" stroke="${QG}" stroke-width="1"/>
+        <path d="M0,-44 v-6" stroke-width="1.2"/><circle cx="0" cy="-51" r="1.8" fill="${QG}"/>
+        ${[-21, 21].map(px => `<path d="M${px - 3},-23 q3,-7 6,0Z" fill="#f7f0e2"/><path d="M${px},-30 v-3" />`).join('')}
+    </g>`;
+}
+function qmElephant(x, y, sc) {
+    return `<g transform="translate(${x},${y}) scale(${sc})" stroke="${QS}" stroke-width=".8">
+        <path d="M-14,0 v-8 C-14,-18 -6,-22 4,-21 C12,-20 16,-15 16,-9 C19,-8 21,-4 20,2 C19,6 21,8 23,9 C20,10 17,8 17,4 L16,0 h-4 v-6 h-4 v6 h-4 v-6 h-6 v6 h-4 v-6 h-2 v6Z" fill="#9aa0a6"/>
+        <path d="M8,-20 C12,-22 17,-17 14,-11 C12,-9 8,-11 8,-14Z" fill="#b3b8bd"/>
+        <circle cx="15" cy="-12" r=".8" fill="${QS}"/><path d="M17,-5 l4,-1" stroke="#f7f0e2" stroke-width="1.3"/>
+        <path d="M-12,-18 h18 v6 h-18Z" fill="#9b2d20"/><path d="M-12,-15 h18" stroke="${QG}" stroke-width="1"/>
+        <path d="M-14,-6 c-3,1 -4,5 -3,8" fill="none"/>
+    </g>`;
+}
+function qmDuck(x, y) { return `<g transform="translate(${x},${y})" stroke="${QS}" stroke-width=".5"><path d="M-4,0 q4,3 8,0 q-1,-3 -4,-2 q-1,-3 1,-4 q2,0 2,2" fill="#f7f0e2"/><path d="M5.5,-3.8 l2,.6 -2,.6Z" fill="${QG}"/></g>`; }
 let qmSceneryCache = null;
 function qmScenery() {
     if (qmSceneryCache) return qmSceneryCache;
@@ -4529,7 +4566,11 @@ function qmScenery() {
         for (let i = 0; i < n; i++) trees.push([cx + (R() - .5) * sp * 2.4, cy + (R() - .5) * sp, 7 + R() * 4, k]);
     });
     trees.sort((a, b) => a[1] - b[1]).forEach(([x, y, r, k]) => s += qmTree(R, x, y, k === 'cypress' ? r * .7 : r, k));
-    s += `<g transform="translate(160,168)" fill="#c27c3e" stroke="${QS}" stroke-width=".7"><ellipse cx="0" cy="0" rx="9" ry="4.5"/><path d="M7,-2 l5,-7 3,1 -3,4Z"/><path d="M-6,3 v7 M-3,3 v7 M4,3 v7 M7,3 v7" fill="none" stroke-width="1.1"/><path d="M13,-9 l2,-5 M14,-8 l4,-3" fill="none"/></g>`;
+    s += `<g transform="translate(62,204)" fill="#c27c3e" stroke="${QS}" stroke-width=".7"><ellipse cx="0" cy="0" rx="9" ry="4.5"/><path d="M7,-2 l5,-7 3,1 -3,4Z"/><path d="M-6,3 v7 M-3,3 v7 M4,3 v7 M7,3 v7" fill="none" stroke-width="1.1"/><path d="M13,-9 l2,-5 M14,-8 l4,-3" fill="none"/></g>`;
+    s += qmPavilion(168, 172, 1.05);
+    s += qmPeacock(132, 206, .78, false) + qmPeacock(272, 150, .62, true);
+    [[300, 96], [342, 80], [280, 78]].forEach(([x, y]) => s += `<path d="M${x},${y} m-5,0 a5,2.6 0 1 0 10,0 a5,2.6 0 1 0 -10,0 M${x},${y} l4,-1.5" fill="#3f7a35" stroke="${QS}" stroke-width=".5"/>`);
+    s += qmDuck(326, 100) + qmDuck(338, 104);
     // Stress Peaks: pastel rock towers
     [[56, 362, 96, 132], [212, 302, 72, 96], [346, 336, 82, 122], [150, 430, 64, 54], [300, 430, 62, 48], [26, 260, 44, 42]].sort((a, b) => a[1] - b[1]).forEach(([x, y, w, h], i) =>
         s += i % 2 ? qmRock(R, x, y, w, h, '#eef0f7', '#c4c9e6', '#8f95c4') : qmRock(R, x, y, w, h, '#f6e1e6', '#dcb2c4', '#a77d9b'));
@@ -4540,6 +4581,7 @@ function qmScenery() {
         s += `<path d="M${x - 8},${y - 4} V${y - 13} a8,8 0 0 1 16,0 V${y - 4}Z" fill="#2a1a10" stroke="${QS}" stroke-width=".8"/>`;
     });
     for (let i = 0; i < 16; i++) { const x = 20 + R() * 360, y = 452 + R() * 132; s += qmTree(R, x, y, 3 + R() * 1.5, 'round'); }
+    s += qmElephant(232, 512, .9);
     // Smoke Dungeon: palace-fort with chhatris, arches and curling smoke
     s += `<g opacity=".95">${[[262, 640, 1], [298, 614, 1.2], [342, 592, 1.1], [236, 664, .8]].map(([x, y, sc]) => qmCloud(x, y, sc, '#8e8798', '#3b3344')).join('')}</g>`;
     const fx = 300, fy = 744;
@@ -4556,6 +4598,9 @@ function qmScenery() {
         ${[-52, -38, 38, 52].map(x => `<path d="M${x - 3},-24 v-9 q3,-5 6,0 v9Z" fill="#e8a33a"/>`).join('')}
     </g>`;
     for (let i = 0; i < 20; i++) { const x = 20 + R() * 360, y = 616 + R() * 150; if (x > 200 && y > 660) continue; s += `<path d="M${x.toFixed(1)},${y.toFixed(1)} l-1.5,-4 M${x.toFixed(1)},${y.toFixed(1)} l1.5,-4" stroke="#2f2836" stroke-width=".9"/>`; }
+    s += `<g transform="translate(34,636)"><circle r="10" fill="#f3e6c4" stroke="${QS}" stroke-width=".8"/><circle cx="5" cy="-3" r="9" fill="#5b4e63"/></g>`;
+    [[22, 664], [58, 616], [70, 650], [16, 610], [48, 680], [176, 660]].forEach(([x, y]) => s += `<path d="M${x},${y - 3} L${x + .9},${y - .9} L${x + 3},${y} L${x + .9},${y + .9} L${x},${y + 3} L${x - .9},${y + .9} L${x - 3},${y} L${x - .9},${y - .9}Z" fill="${QG}"/>`);
+    [-86, 86].forEach(dx => s += `<path d="M${300 + dx},${744 - 129} v-12 l12,4 -12,4" fill="#c0392b" stroke="${QS}" stroke-width=".7"/>`);
     // compass: gold eight-pointed star
     s += `<g transform="translate(366,612)"><path d="M0,-16 L3.5,-3.5 L16,0 L3.5,3.5 L0,16 L-3.5,3.5 L-16,0 L-3.5,-3.5Z" fill="${QG}" stroke="${QS}" stroke-width="1"/><path d="M0,-16 L3.5,-3.5 L-3.5,-3.5Z" fill="#9b2d20"/><circle r="2.4" fill="${QS}"/>
         <text y="-21" text-anchor="middle" font-size="12" font-family="Georgia, serif" font-weight="700" fill="#f5ecd7" style="paint-order: stroke" stroke="${QS}" stroke-width="3">N</text></g>`;
