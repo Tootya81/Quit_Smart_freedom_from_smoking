@@ -31,6 +31,8 @@ A single-page web app that helps people stop smoking without relying on willpowe
 | `supabase/setup.sql` | One-time database setup for optional accounts, sync and invites |
 | `supabase/research.sql` | One-time setup for the optional anonymous research table |
 | `manifest.webmanifest`, `sw.js`, `icons/` | Installable app (home-screen icon, works offline) |
+| `admin/index.html` | Private admin stats page at /admin (totals only) |
+| `supabase/admin.sql` | One-time setup for admin stats; lists which emails are admins |
 
 ## Deploy on Netlify
 1. Netlify → **Add new site → Import an existing project → GitHub** → pick this repo.
@@ -48,6 +50,7 @@ Everything works offline in the browser (`localStorage`). Signing in is optional
 - Auth: email one-time code. The Magic Link (and Confirm sign up) email template must include `{{ .Token }}`. Configure custom SMTP before launch; the built-in sender only allows a few emails an hour.
 - Synced: the app state (minus the avatar photo). Invite links use `?ref=CODE`; a friend counts once they sign in and have saved progress.
 - Legal texts and the grievance contact live in `LEGAL_CONFIG` (search `const LEGAL_CONFIG`).
+- Admin stats: run `supabase/admin.sql`, then open `/admin` and sign in with an admin email (one that already has a QuitSmart account). Shows totals only, never anyone's notes or email.
 - Optional research: run `supabase/research.sql`. Results: SQL Editor → `select * from research_summary;` (groups under 5 people are hidden). Rows are never linked to accounts.
 
 ## Roadmap

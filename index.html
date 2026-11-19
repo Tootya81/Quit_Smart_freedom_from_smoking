@@ -8,6 +8,7 @@
     <link rel="manifest" href="/manifest.webmanifest">
     <meta name="theme-color" content="#059669">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -89,6 +90,9 @@
             .bar    { @apply w-full h-3 rounded-full bg-neutral-200 dark:bg-neutral-800 border-2 border-neutral-950 overflow-hidden; }
             .btn    { @apply rounded-xl font-black uppercase cursor-pointer; }
         }
+    </style>
+
+    <style>
         .qcard-rays { background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.28) 0deg 9deg, transparent 9deg 18deg); }
         .qcard-spin { animation: qspin 24s linear infinite; }
         @keyframes qspin { to { transform: rotate(360deg); } }
@@ -99,14 +103,21 @@
         .qcard-glow { animation: qglow 2.2s ease-in-out infinite; }
         @keyframes qglow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(255,230,120,.8)); } 50% { filter: drop-shadow(0 0 14px rgba(255,210,60,1)); } }
         @media (prefers-reduced-motion: reduce) { .qcard-spin, .qcard-shine::after, .qcard-glow { animation: none; } }
+        .qm-pulse { animation: qmPulse 1.6s ease-in-out infinite; }
+        @keyframes qmPulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+        .qm-hero { animation: qmBob 2.2s ease-in-out infinite; }
+        @keyframes qmBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        .qnode:focus { outline: none; } .qnode:focus-visible circle:nth-of-type(3) { stroke: #e11d48; }
+        @media (prefers-reduced-motion: reduce) { .qm-pulse, .qm-hero { animation: none; } }
+        .qs-wordmark { font-weight: 900; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; display: inline-block; }
+        .qs-wm-i { position: relative; display: inline-block; }
+        .qs-sprout { position: absolute; left: 50%; bottom: 0.68em; width: 0.5em; height: 0.5em; transform: translateX(-50%); overflow: visible; }
+        .qs-wm-smart { color: #047857; } .dark .qs-wm-smart { color: #6ee7b7; }
         .legal-prose { font-size: .875rem; line-height: 1.6; }
         .legal-prose p, .legal-prose ul { margin: .55rem 0; }
         .legal-prose h4 { margin-top: 1.1rem; font-weight: 900; text-transform: uppercase; font-size: .8rem; letter-spacing: .02em; }
         .legal-prose ul { list-style: disc; padding-left: 1.2rem; }
         .legal-prose li { margin: .25rem 0; }
-    </style>
-
-    <style>
         :root { font-size: clamp(14.5px, 1.5vw, 16px); }
         html, body { font-family: 'Exo 2', ui-sans-serif, system-ui, sans-serif; overflow-x: hidden; max-width: 100%; }
 
@@ -178,11 +189,9 @@
     <div id="auth-view" class="hidden min-h-screen flex flex-col justify-between p-4 sm:p-6 benday-surface">
         <div class="w-full max-w-md mx-auto row">
             <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-xl bg-emerald-600 border-2 border-neutral-950 shadow-[3px_3px_0px_#0a0a0a] flex items-center justify-center text-white shrink-0">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9"/><path d="M12 13c-3.5 0-6-2.5-6-6 3.5 0 6 2.5 6 6z"/><path d="M12 10c3.5 0 6-2.5 6-6-3.5 0-6 2.5-6 6z"/></svg>
-                </div>
+                <svg class="w-12 h-12 shrink-0" viewBox="0 0 200 200" role="img" aria-label="QuitSmart logo"><circle cx="100" cy="100" r="92" fill="#fde047" stroke="#0a0a0a" stroke-width="6"/><g transform="rotate(24 94 146)"><rect x="28" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="28" y="135.0" width="22" height="22" rx="5" fill="#fb923c" stroke="#0a0a0a" stroke-width="6"/><path d="M94,135.0 l-5,5 5,4 -5,5 5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><g transform="rotate(-24 106 146)"><rect x="106" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="156" y="135.0" width="16" height="22" rx="4" fill="#a8a29e" stroke="#0a0a0a" stroke-width="6"/><path d="M106,135.0 l5,5 -5,4 5,5 -5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#0a0a0a" stroke-width="13" stroke-linecap="round"/><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#047857" stroke-width="6" stroke-linecap="round"/><path d="M99,108 C72,108 56,90 54,64 C82,64 98,82 99,108Z" fill="#34d399" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M96,104 C84,96 74,86 66,74" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/><path d="M101,86 C130,84 148,66 150,38 C118,38 101,58 101,86Z" fill="#22c55e" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M104,82 C118,70 130,58 140,46" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/></svg>
                 <div>
-                    <span class="block text-base font-black uppercase tracking-tight leading-none text-neutral-950 dark:text-white">QuitSmart</span>
+                    <span class="block leading-none pt-1.5"><span class="qs-wordmark text-2xl text-neutral-950 dark:text-white" role="img" aria-label="QuitSmart"><span aria-hidden="true">Qu<span class="qs-wm-i">ı<svg class="qs-sprout" viewBox="0 0 40 40" aria-hidden="true"><path d="M20,40 C20,30 19,24 20,16" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round"/><path d="M19.5,27 C12,27 7,22 6,14 C14,14 19,19 19.5,27Z" fill="#34d399" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M20.5,21 C28,20 33,15 34,7 C26,7 20.5,12 20.5,21Z" fill="#34d399" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span>t<span class="qs-wm-smart">Smart</span></span></span></span>
                     <span class="block text-xs font-bold text-emerald-700 dark:text-emerald-400">Freedom from smoking</span>
                 </div>
             </div>
@@ -307,12 +316,10 @@
         <header class="sticky top-0 z-30 bg-white/95 dark:bg-neutral-900/95 backdrop-blur border-b-2 border-neutral-950 dark:border-neutral-800">
             <div class="max-w-xl mx-auto px-3 sm:px-4 py-2.5 row">
                 <div class="flex items-center gap-2.5 min-w-0">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-600 border-2 border-neutral-950 shadow-[2px_2px_0px_#0a0a0a] flex items-center justify-center text-white shrink-0">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V9"/><path d="M12 13c-3.5 0-6-2.5-6-6 3.5 0 6 2.5 6 6z"/><path d="M12 10c3.5 0 6-2.5 6-6-3.5 0-6 2.5-6 6z"/></svg>
-                    </div>
+                    <svg class="w-10 h-10 shrink-0" viewBox="0 0 200 200" role="img" aria-label="QuitSmart logo"><circle cx="100" cy="100" r="92" fill="#fde047" stroke="#0a0a0a" stroke-width="6"/><g transform="rotate(24 94 146)"><rect x="28" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="28" y="135.0" width="22" height="22" rx="5" fill="#fb923c" stroke="#0a0a0a" stroke-width="6"/><path d="M94,135.0 l-5,5 5,4 -5,5 5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><g transform="rotate(-24 106 146)"><rect x="106" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="156" y="135.0" width="16" height="22" rx="4" fill="#a8a29e" stroke="#0a0a0a" stroke-width="6"/><path d="M106,135.0 l5,5 -5,4 5,5 -5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#0a0a0a" stroke-width="13" stroke-linecap="round"/><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#047857" stroke-width="6" stroke-linecap="round"/><path d="M99,108 C72,108 56,90 54,64 C82,64 98,82 99,108Z" fill="#34d399" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M96,104 C84,96 74,86 66,74" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/><path d="M101,86 C130,84 148,66 150,38 C118,38 101,58 101,86Z" fill="#22c55e" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M104,82 C118,70 130,58 140,46" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/></svg>
                     <div class="min-w-0">
                         <div class="flex items-center gap-1.5">
-                            <span class="font-black text-sm sm:text-base uppercase tracking-tight text-neutral-950 dark:text-white truncate">QuitSmart</span>
+                            <span class="qs-wordmark text-lg sm:text-xl text-neutral-950 dark:text-white" role="img" aria-label="QuitSmart"><span aria-hidden="true">Qu<span class="qs-wm-i">ı<svg class="qs-sprout" viewBox="0 0 40 40" aria-hidden="true"><path d="M20,40 C20,30 19,24 20,16" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round"/><path d="M19.5,27 C12,27 7,22 6,14 C14,14 19,19 19.5,27Z" fill="#34d399" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M20.5,21 C28,20 33,15 34,7 C26,7 20.5,12 20.5,21Z" fill="#34d399" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg></span>t<span class="qs-wm-smart">Smart</span></span></span>
                             <span id="header-days-badge" class="text-[11px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-400 text-neutral-950 border border-neutral-950 shrink-0">Day 1</span>
                         </div>
                         <p class="text-[11px] font-bold text-neutral-500 dark:text-neutral-400 truncate">Freedom from smoking • <span id="user-display-name">Friend</span></p>
@@ -4217,23 +4224,7 @@ function renderQuest() {
             <div class="flex items-center justify-between gap-1">${QREGIONS.map((r, i) => `<div class="flex-1 flex flex-col items-center gap-1"><span class="w-10 h-10 rounded-full border-[3px] border-neutral-950 flex items-center justify-center text-lg ${beaten.includes(r.nodes[2].id) ? 'bg-emerald-300' : i === ci ? r.color + ' animate-pulse' : 'bg-neutral-200 dark:bg-neutral-800 grayscale'}">${beaten.includes(r.nodes[2].id) ? '✓' : r.icon}</span><span class="text-[9px] font-black uppercase text-center leading-tight">${esc(r.act)}</span></div>`).join('<span class="text-neutral-400 font-black -mt-4">→</span>')}</div>
             <p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">${doneAll ? '<strong>The Ash Ring is broken.</strong> ' + esc(QREGIONS[3].outro) + ' Replay any battle to keep your powers sharp.' : esc((ci > 0 ? QREGIONS[ci - 1].outro + ' ' : '') ).replace(/^(.)/, '$1') + (ci > 0 ? '<br><br>' : '') + '<strong>' + esc(QREGIONS[ci].name) + ':</strong> ' + esc(QREGIONS[ci].intro)}</p>
         </div>`;
-        html += QREGIONS.map((r, ri) => {
-            const ro = regionOpen(ri, f);
-            return `<div class="card pop-card space-y-3 ${ro.open ? '' : 'opacity-75'}">
-                <div class="row"><span class="tag ${r.color} text-neutral-950">${r.icon} Act ${ri + 1} • ${r.name}</span>
-                ${ro.open ? '' : `<span class="text-[10px] font-black uppercase text-neutral-500 text-right">🔒 ${esc(ro.why)}</span>`}</div>
-                <div class="relative flex items-center justify-between gap-2 px-1">
-                    <div class="absolute left-6 right-6 top-1/2 border-t-4 border-dotted border-neutral-400 dark:border-neutral-700 -translate-y-1/2"></div>
-                    ${r.nodes.map((n, ni) => {
-                        const done = beaten.includes(n.id), open = nodeOpen(ri, ni, f);
-                        return `<button type="button" ${open ? `onclick="startBattle('${n.id}')"` : 'disabled'} class="relative z-10 flex flex-col items-center gap-1 ${open ? 'cursor-pointer' : 'cursor-not-allowed'}">
-                            <span class="${n.boss ? 'w-16 h-16 text-3xl' : 'w-12 h-12 text-2xl'} rounded-full flex items-center justify-center border-[3px] border-neutral-950 ${done ? 'bg-emerald-300' : open ? 'bg-yellow-300 animate-pulse' : 'bg-neutral-200 dark:bg-neutral-800 grayscale'} shadow-[3px_3px_0px_#0a0a0a]">${done ? '✓' : open ? n.icon : '🔒'}</span>
-                            <span class="text-[10px] font-black uppercase text-center leading-tight max-w-[5.5rem] bg-white/90 dark:bg-neutral-900/90 px-1 rounded">${esc(n.name)}${n.boss ? '<br><span class="text-rose-600">Boss</span>' : ''}</span>
-                        </button>`;
-                    }).join('')}
-                </div>
-            </div>`;
-        }).join('');
+        html += questMapHTML(f, beaten);
     }
     box.innerHTML = html;
 }
@@ -4423,6 +4414,185 @@ function renderBattle() {
     }
     $('battle-body').innerHTML = body;
 }
+/* ============================================================
+   FREEDOM QUEST WORLD MAP (illustrated SVG, pop-art style)
+   Bottom → top: Smoke Dungeon → Craving Tunnels → Stress Peaks → Cleansing Falls
+   ============================================================ */
+const QMAP_W = 400, QMAP_H = 780;
+const QMAP_POS = {
+    s1: [92, 690], s2: [214, 718], s3: [320, 646],
+    c1: [292, 548], c2: [166, 532], c3: [76, 464],
+    p1: [136, 382], p2: [262, 344], p3: [326, 262],
+    f1: [226, 196], f2: [104, 150], f3: [212, 66]
+};
+const QMAP_BANDS = [[592, 780], [430, 592], [218, 430], [0, 218]]; // y-ranges per act (index = region)
+let questSel = null;
+
+function qmSmoothPath(pts) {
+    let d = 'M' + pts[0][0] + ',' + pts[0][1];
+    for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+        const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+        d += ' C' + c1.map(Math.round) + ' ' + c2.map(Math.round) + ' ' + p2;
+    }
+    return d;
+}
+function qmWrap(text, max) {
+    const words = String(text).split(' '), out = []; let line = '';
+    words.forEach(w => { if ((line + ' ' + w).trim().length > max && line) { out.push(line); line = w; } else line = (line + ' ' + w).trim(); });
+    if (line) out.push(line); return out;
+}
+function qmRng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+let qmSceneryCache = null;
+function qmScenery() {
+    if (qmSceneryCache) return qmSceneryCache;
+    const R = qmRng(7), W = QMAP_W, H = QMAP_H;
+    let s = '';
+    // base land: meadow (top) → granite highlands → ochre badlands → ashen waste (bottom), soft transitions
+    s += `<rect width="${W}" height="${H}" fill="url(#qm-land)"/>`;
+    s += `<rect width="${W}" height="${H}" fill="#000" filter="url(#qm-patches)" opacity=".22"/>`;
+    // lake + river (falls at the cliff edge, then winding down to the dungeon marsh)
+    const river = 'M318,40 C300,70 296,96 288,118 C282,136 286,160 280,186 C270,224 236,232 214,260 C192,288 216,312 196,340 C176,368 120,372 104,404 C88,436 120,470 136,500 C150,528 120,560 96,592 C78,616 70,640 58,668';
+    s += `<path d="M262,18 C300,6 352,10 370,32 C384,52 360,74 330,76 C300,78 270,70 258,52 C250,38 252,24 262,18Z" fill="#4f86a8"/>`;
+    s += `<path d="M268,24 C300,14 346,18 362,34 C372,48 352,66 328,68 C302,70 278,62 268,50 C262,40 262,30 268,24Z" fill="#6ea3c2" opacity=".85"/>`;
+    s += `<path d="${river}" fill="none" stroke="#3f6f8c" stroke-width="9" stroke-linecap="round" opacity=".55"/>`;
+    s += `<path d="${river}" fill="none" stroke="#7fb3cf" stroke-width="5" stroke-linecap="round"/>`;
+    // waterfall over the cliff
+    s += `<path d="M262,170 C290,160 320,166 340,178 L340,190 C318,180 290,176 262,184Z" fill="#6b6259" opacity=".75"/>`;
+    s += `<g stroke="#f1f5f9" stroke-linecap="round" opacity=".9"><path d="M276,168 V196" stroke-width="2.5"/><path d="M282,166 V200" stroke-width="2"/><path d="M288,170 V194" stroke-width="2.5"/></g>`;
+    s += `<ellipse cx="282" cy="200" rx="18" ry="6" fill="#e2e8f0" opacity=".7"/>`;
+    // forest: clusters of tree crowns in the meadow
+    const tree = (x, y, r) => `<circle cx="${(x + r * .35).toFixed(1)}" cy="${(y + r * .45).toFixed(1)}" r="${r}" fill="#1f3a24" opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="url(#qm-tree)"/>`;
+    [[60, 70, 26, 22], [150, 110, 20, 14], [40, 180, 18, 12], [360, 120, 16, 10], [200, 20, 22, 12]].forEach(([cx, cy, spread, n]) => {
+        for (let i = 0; i < n; i++) { const a = R() * 6.28, d = Math.sqrt(R()) * spread; s += tree(cx + Math.cos(a) * d * 1.4, cy + Math.sin(a) * d, 4 + R() * 3.5); }
+    });
+    // granite highlands: shaded ridges (light from upper-left), snow on the highest
+    const peaks = [];
+    for (let i = 0; i < 26; i++) peaks.push([18 + R() * 364, 236 + R() * 168, 18 + R() * 26]);
+    peaks.sort((a, b) => a[1] - b[1]).forEach(([x, y, r]) => {
+        const h = r * 1.15, snow = y < 300 || r > 38;
+        s += `<path d="M${x - r},${y + h * .55} L${x},${y - h * .55} L${x + r},${y + h * .55}Z" fill="#000" opacity=".12" transform="translate(5,5)"/>`;
+        s += `<path d="M${x - r},${y + h * .55} L${x},${y - h * .55} L${x + r * .1},${y + h * .55}Z" fill="#b9b0a4"/>`;
+        s += `<path d="M${x + r * .1},${y + h * .55} L${x},${y - h * .55} L${x + r},${y + h * .55}Z" fill="#857a6e"/>`;
+        if (snow) s += `<path d="M${x - r * .3},${y - h * .2} L${x},${y - h * .55} L${x + r * .32},${y - h * .2} L${x + r * .12},${y - h * .27} L${x},${y - h * .18} L${x - r * .12},${y - h * .28}Z" fill="#f8fafc"/>`;
+    });
+    // faint contour lines around the range
+    [0, 1, 2].forEach(k => s += `<path d="M${-10},${410 - k * 10} C80,${380 - k * 14} 160,${420 - k * 8} 240,${392 - k * 12} S380,${404 - k * 10} 420,${380 - k * 8}" fill="none" stroke="#5c4a36" stroke-width=".8" opacity=".25"/>`);
+    // badlands: canyon cracks, cave mouths, scattered rocks
+    s += `<path d="M0,470 C60,486 90,452 150,470 S250,500 300,474 S380,456 400,470" fill="none" stroke="#6b4423" stroke-width="3" opacity=".45"/>`;
+    s += `<path d="M20,560 C80,540 140,580 210,556 S330,530 400,552" fill="none" stroke="#6b4423" stroke-width="2.5" opacity=".4"/>`;
+    [[44, 486, 14, 7], [352, 512, 16, 8], [240, 582, 13, 6], [120, 552, 10, 5]].forEach(([x, y, rx, ry]) => {
+        s += `<ellipse cx="${x}" cy="${y}" rx="${rx + 5}" ry="${ry + 4}" fill="#8a6440" opacity=".6"/><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="url(#qm-cave)"/>`;
+    });
+    for (let i = 0; i < 40; i++) { const x = R() * W, y = 440 + R() * 145, r = 1 + R() * 2.4; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="#5a3d24" opacity=".45"/>`; }
+    // ashen waste + ruined fortress (top-down), smoke drifting east
+    s += `<g transform="translate(286,690)">
+        <rect x="-62" y="-50" width="124" height="96" fill="#000" opacity=".25" transform="translate(5,6)"/>
+        <rect x="-62" y="-50" width="124" height="96" fill="#5f5a55"/><rect x="-50" y="-38" width="100" height="72" fill="#3b3734"/>
+        <rect x="-28" y="-18" width="56" height="34" fill="#4a4541"/>
+        ${[[-62, -50], [62, -50], [-62, 46], [62, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="#6d6762"/><circle cx="${x}" cy="${y}" r="8" fill="#3b3734"/>`).join('')}
+        <path d="M-8,46 h16 v10 h-16z" fill="#2a2725"/>
+    </g>`;
+    for (let i = 0; i < 30; i++) { const x = R() * W, y = 600 + R() * 175; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1 + R() * 2).toFixed(1)}" fill="#2b2826" opacity=".35"/>`; }
+    s += `<g filter="url(#qm-blur6)" opacity=".55">${[[300, 640, 22], [330, 612, 26], [362, 590, 30], [240, 650, 16], [120, 700, 20]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#d6d3d1"/>`).join('')}</g>`;
+    // paper grain + vignette
+    s += `<rect width="${W}" height="${H}" filter="url(#qm-grain)" opacity=".5"/>`;
+    s += `<rect width="${W}" height="${H}" fill="url(#qm-vignette)"/>`;
+    // compass rose + scale bar
+    s += `<g transform="translate(372,604)" opacity=".9"><circle r="20" fill="#f5efe1" opacity=".8"/><circle r="20" fill="none" stroke="#5c4a36" stroke-width="1"/>
+        <path d="M0,-17 L4,0 L0,17 L-4,0Z" fill="#5c4a36"/><path d="M0,-17 L4,0 L-4,0Z" fill="#b45309"/><path d="M-17,0 L0,3 L17,0 L0,-3Z" fill="#8b7355" opacity=".7"/>
+        <text y="-25" text-anchor="middle" font-size="12" font-family="Georgia, serif" font-weight="700" fill="#fbf7ee" style="paint-order: stroke" stroke="#1c1917" stroke-width="3">N</text></g>`;
+    s += `<g transform="translate(290,758)" font-family="Georgia, serif" font-size="10" fill="#f5f5f4"><rect width="60" height="4" fill="#e7e5e4"/><rect width="30" height="4" fill="#57534e"/><text y="-3">0</text><text x="52" y="-3">1 league</text></g>`;
+    qmSceneryCache = s;
+    return s;
+}
+function questMapHTML(f, beaten) {
+    const K = '#0a0a0a';
+    const order = QREGIONS.flatMap((r, ri) => r.nodes.map((n, ni) => ({ n, ri, ni })));
+    const curItem = order.find(x => !beaten.includes(x.n.id) && nodeOpen(x.ri, x.ni, f)) || order.filter(x => beaten.includes(x.n.id)).pop() || order[0];
+    if (!questSel || !order.some(x => x.n.id === questSel)) questSel = curItem.n.id;
+    const pts = [[36, 726]].concat(order.map(x => QMAP_POS[x.n.id]));
+    // progress path: how far the hero has walked
+    const reachedIdx = order.findIndex(x => x.n.id === curItem.n.id);
+    const walked = pts.slice(0, reachedIdx + 2);
+    let svg = `<svg viewBox="0 0 ${QMAP_W} ${QMAP_H}" width="100%" class="block select-none" role="img" aria-label="Freedom Quest world map">
+      <defs>
+        <linearGradient id="qm-land" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7f9a5c"/><stop offset=".2" stop-color="#8ea36a"/><stop offset=".27" stop-color="#a39d86"/>
+          <stop offset=".52" stop-color="#9c9484"/><stop offset=".58" stop-color="#b98d5a"/><stop offset=".74" stop-color="#a87a4a"/>
+          <stop offset=".79" stop-color="#5e5852"/><stop offset="1" stop-color="#3e3a37"/></linearGradient>
+        <radialGradient id="qm-tree" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#5f8f4e"/><stop offset=".7" stop-color="#355e33"/><stop offset="1" stop-color="#26472a"/></radialGradient>
+        <radialGradient id="qm-cave" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="#120c08"/><stop offset="1" stop-color="#3a2717"/></radialGradient>
+        <radialGradient id="qm-vignette" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1917" stop-opacity=".45"/></radialGradient>
+        <filter id="qm-patches" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 -.55"/></filter>
+        <filter id="qm-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 .3  0 0 0 0 .24  0 0 0 0 .18  0 0 0 .35 0"/></filter>
+        <filter id="qm-blur6"><feGaussianBlur stdDeviation="6"/></filter>
+        <filter id="qm-mist" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+        <filter id="qm-pin" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".45"/></filter>
+        <clipPath id="qm-avclip"><circle cx="0" cy="0" r="15"/></clipPath>
+      </defs>
+      ${qmScenery()}
+      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#f5efe1" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#3f2f1f" stroke-width="2" stroke-dasharray="5 5" stroke-linecap="round" opacity=".85"/>
+      ${walked.length > 1 ? `<path d="${qmSmoothPath(walked)}" fill="none" stroke="#b45309" stroke-width="3.2" stroke-linecap="round"/>` : ''}`;
+    // mist over uncharted lands + cartographic labels
+    const LABEL_POS = [[150, 612], [258, 448], [116, 242], [104, 30]];
+    QREGIONS.forEach((r, ri) => {
+        const [y0, y1] = QMAP_BANDS[ri], ro = regionOpen(ri, f), cleared = beaten.includes(r.nodes[2].id);
+        if (!ro.open) {
+            svg += `<clipPath id="qm-band${ri}"><rect x="0" y="${y0}" width="${QMAP_W}" height="${y1 - y0}"/></clipPath>
+                <linearGradient id="qm-fade${ri}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d6d0" stop-opacity="0"/><stop offset=".12" stop-color="#d9d6d0" stop-opacity=".5"/><stop offset=".88" stop-color="#d9d6d0" stop-opacity=".5"/><stop offset="1" stop-color="#d9d6d0" stop-opacity="0"/></linearGradient>
+                <g clip-path="url(#qm-band${ri})"><rect x="0" y="${y0}" width="${QMAP_W}" height="${y1 - y0}" fill="url(#qm-fade${ri})"/>
+                <g filter="url(#qm-mist)" opacity=".7">${[0, 1, 2, 3, 4].map(i => `<ellipse cx="${40 + i * 82}" cy="${(y0 + y1) / 2 + (i % 2 ? -14 : 12)}" rx="70" ry="${(y1 - y0) / 2 - 18}" fill="#f1efeb"/>`).join('')}</g></g>`;
+        }
+        const [lx, ly] = LABEL_POS[ri], roman = ['I', 'II', 'III', 'IV'][ri];
+        const name = r.name.replace(/^The /, '').toUpperCase();
+        const ink = ro.open ? '#1f140a' : '#3f3a36';
+        svg += `<g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle" style="paint-order: stroke" stroke="#fbf7ee" stroke-width="5" stroke-linejoin="round">
+            <text x="${lx}" y="${ly}" font-size="12" letter-spacing="1.5" font-weight="700" fill="${cleared ? '#14532d' : ink}" font-style="italic">Act ${roman}${cleared ? ' · Cleared ✓' : !ro.open ? ' · Uncharted' : ''}</text>
+            <text x="${lx}" y="${ly + 21}" font-size="18" letter-spacing="1.5" font-weight="700" fill="${ink}">${esc(name)}</text></g>`;
+    });
+    // nodes
+    order.forEach(({ n, ri, ni }, idx) => {
+        const [x, y] = QMAP_POS[n.id], done = beaten.includes(n.id), open = nodeOpen(ri, ni, f), sel = n.id === questSel;
+        const r = n.boss ? 15 : 12, fill = done ? '#2f6f4f' : open ? '#c2410c' : '#57534e';
+        svg += `<g class="qnode" data-node="${n.id}" onclick="selectQuestNode('${n.id}')" role="button" tabindex="0" aria-label="${esc(n.name)}${done ? ', defeated' : open ? ', ready' : ', locked'}" style="cursor:pointer">
+            <circle cx="${x}" cy="${y}" r="${r + 16}" fill="transparent"/>
+            ${open && !done ? `<circle cx="${x}" cy="${y}" r="${r + 6}" fill="none" stroke="#c2410c" stroke-width="2.5" class="qm-pulse"/>` : ''}
+            ${sel ? `<circle cx="${x}" cy="${y}" r="${r + 5}" fill="none" stroke="#f5efe1" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${r + 7.5}" fill="none" stroke="#1c1917" stroke-width="1.2" stroke-dasharray="3 3"/>` : ''}
+            ${n.boss ? `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none" stroke="${fill}" stroke-width="1.5" opacity=".9"/>` : ''}
+            <circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#f5efe1" stroke-width="2.5" filter="url(#qm-pin)"/>
+            ${done ? `<path d="M${x - 5},${y} l3.8,4 7,-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`
+                   : `<text x="${x}" y="${y + (n.boss ? 5 : 4.5)}" text-anchor="middle" font-family="Georgia, serif" font-size="${n.boss ? 15 : 13}" font-weight="700" fill="#fff">${idx + 1}</text>`}
+            ${n.boss ? `<g transform="translate(${x},${y + r + 13})"><rect x="-19" y="-9" width="38" height="16" rx="8" fill="#7f1d1d" stroke="#fbf7ee" stroke-width="1.5"/><text y="3.8" text-anchor="middle" font-family="Georgia, serif" font-size="10.5" font-weight="700" letter-spacing="1" fill="#fff">BOSS</text></g>` : ''}
+        </g>`;
+    });
+    // hero token
+    const [hx, hy] = QMAP_POS[curItem.n.id], hr = curItem.n.boss ? 15 : 12, ty = hy - hr - 26;
+    const av = avatarSVG(avatarOf()).replace(/<svg[^>]*?viewBox=/, `<svg x="-15" y="-15" width="30" height="30" viewBox=`);
+    svg += `<g class="qm-hero" pointer-events="none"><g transform="translate(${hx},${ty})" filter="url(#qm-pin)"><path d="M-6,13 L0,${hr + 6} L6,13Z" fill="#f5efe1"/><circle r="17" fill="#f5efe1"/><g clip-path="url(#qm-avclip)"><circle r="15" fill="#d6d3d1"/>${av}</g></g></g>`;
+    svg += `</svg>`;
+
+    // selected node panel
+    const sx = order.find(x => x.n.id === questSel), sn = sx.n, sdone = beaten.includes(sn.id), sopen = nodeOpen(sx.ri, sx.ni, f);
+    const ro = regionOpen(sx.ri, f);
+    const lockWhy = !ro.open ? ro.why : sx.ni > 0 && !beaten.includes(QREGIONS[sx.ri].nodes[sx.ni - 1].id) ? 'Defeat ' + QREGIONS[sx.ri].nodes[sx.ni - 1].name + ' first' : '';
+    const panel = `<div class="flex items-center gap-3">
+            <span class="w-14 h-14 shrink-0 rounded-full border-[3px] border-neutral-950 flex items-center justify-center text-3xl ${sdone ? 'bg-emerald-300' : sopen ? 'bg-yellow-300' : 'bg-neutral-200 dark:bg-neutral-800 grayscale'}">${sn.icon}</span>
+            <div class="min-w-0 flex-1">
+                <span class="block text-[10px] font-black uppercase text-neutral-500">${QREGIONS[sx.ri].icon} Act ${sx.ri + 1} • ${esc(QREGIONS[sx.ri].name)}${sn.boss ? ' • <span class="text-rose-600">Boss</span>' : ''}</span>
+                <span class="block text-base font-black uppercase leading-tight text-neutral-950 dark:text-white">${esc(sn.name)}</span>
+                <span class="block text-[11px] font-bold text-neutral-600 dark:text-neutral-400">❤ ${sn.hp} HP${sdone ? ' • ✓ Defeated' : ''}</span>
+            </div>
+        </div>
+        ${sdone ? `<p class="text-xs font-bold text-neutral-700 dark:text-neutral-300 italic">"${esc(sn.truth)}"</p>` : ''}
+        ${sopen || sdone
+            ? `<button type="button" onclick="startBattle('${sn.id}')" class="w-full py-3 btn text-sm ${sdone ? 'bg-white dark:bg-neutral-800' : 'bg-rose-400 text-neutral-950'} pop-btn">${sdone ? '↻ Replay battle' : '⚔️ Battle!'}</button>`
+            : `<p class="text-xs font-black uppercase text-neutral-500 p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border-2 border-dashed border-neutral-400">🔒 ${esc(lockWhy)}</p>`}`;
+    return `<div class="card pop-card !p-0 overflow-hidden"><div class="qmap">${svg}</div></div>
+        <div id="quest-sel" class="card pop-card space-y-2.5">${panel}</div>`;
+}
+window.selectQuestNode = function (id) { questSel = id; renderQuest(); const p = $('quest-sel'); if (p) p.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
 
 /* ===== QR code generator: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license; node port from qrcode-terminal (Apache-2.0). Bundled unmodified. ===== */
 const QRLib = (function(){ const mods={}, cache={};
@@ -5698,9 +5868,12 @@ const supportOn = () => !!(SUPPORT_CONFIG.upiId && /@/.test(SUPPORT_CONFIG.upiId
 let supportAmt = null;
 
 function upiLink(amount) {
+    // Personal UPI IDs: UPI apps often block links that pre-fill an amount or note
+    // ("declined for security reasons"), so only the payee is filled in and the person
+    // types the amount. With a merchant/business UPI ID, set SUPPORT_CONFIG.merchant = true.
     const enc = v => encodeURIComponent(v).replace(/%40/g, '@');
-    let u = 'upi://pay?pa=' + enc(SUPPORT_CONFIG.upiId) + '&pn=' + enc(SUPPORT_CONFIG.payeeName) + '&cu=INR&tn=' + enc(SUPPORT_CONFIG.note);
-    if (amount > 0) u += '&am=' + Number(amount).toFixed(2);
+    let u = 'upi://pay?pa=' + enc(SUPPORT_CONFIG.upiId) + '&pn=' + enc(SUPPORT_CONFIG.payeeName) + '&cu=INR';
+    if (SUPPORT_CONFIG.merchant) { u += '&tn=' + enc(SUPPORT_CONFIG.note); if (amount > 0) u += '&am=' + Number(amount).toFixed(2); }
     return u;
 }
 function qrSVG(text) {
@@ -5770,16 +5943,28 @@ function renderSupport() {
                 <input id="support-custom" type="number" min="1" step="1" inputmode="numeric" value="${opts.some(o => o.amt === supportAmt) ? '' : supportAmt || ''}" placeholder="e.g. 50" onchange="pickSupportAmt(this.value)" class="inp pop-input !py-2">
             </div>
         </div>
-        <div class="card pop-card space-y-3 text-center">
+        <div class="card pop-card space-y-3">
             <span class="tag bg-sky-300 text-neutral-950">Pay with any UPI app</span>
-            <div class="w-52 h-52 mx-auto p-2 bg-white rounded-2xl border-[3px] border-neutral-950 shadow-[4px_4px_0px_#0a0a0a]">${qrSVG(upiLink(supportAmt))}</div>
-            <p class="text-xs font-bold text-neutral-600 dark:text-neutral-400">Scan with GPay, PhonePe, Paytm, BHIM or your bank app${supportAmt ? ` • <strong>₹${Number(supportAmt).toLocaleString('en-IN')}</strong>` : ''}</p>
-            <a href="${upiLink(supportAmt)}" class="block w-full py-3 btn text-sm bg-emerald-400 hover:bg-emerald-300 text-neutral-950 pop-btn">📱 Open My UPI App</a>
-            <div class="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700">
-                <span class="text-xs font-bold truncate">UPI ID: <strong class="tabular-nums">${esc(SUPPORT_CONFIG.upiId)}</strong></span>
-                <button type="button" onclick="copyUpi()" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase bg-yellow-300 text-neutral-950 border-2 border-neutral-950 cursor-pointer">Copy</button>
-            </div>
-            <p class="text-[11px] text-neutral-500 leading-relaxed">If the button doesn't open your app, scan the QR code or pay the UPI ID directly. Payments go straight to ${esc(SUPPORT_CONFIG.payeeName)}, QuitSmart's creator, through UPI. QuitSmart never sees your bank details.</p>
+            <ol class="space-y-2.5">
+                <li class="flex gap-2.5"><span class="w-6 h-6 shrink-0 rounded-full bg-yellow-300 border-2 border-neutral-950 text-xs font-black flex items-center justify-center">1</span>
+                    <div class="flex-1 min-w-0 flex items-center justify-between gap-2 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700">
+                        <span class="text-xs font-bold truncate">UPI ID: <strong>${esc(SUPPORT_CONFIG.upiId)}</strong></span>
+                        <button type="button" onclick="copyUpi()" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-black uppercase bg-yellow-300 text-neutral-950 border-2 border-neutral-950 cursor-pointer">Copy</button>
+                    </div></li>
+                <li class="flex gap-2.5 items-start"><span class="w-6 h-6 shrink-0 rounded-full bg-yellow-300 border-2 border-neutral-950 text-xs font-black flex items-center justify-center">2</span>
+                    <span class="text-xs font-bold text-neutral-700 dark:text-neutral-300 pt-0.5">Open GPay, PhonePe, Paytm, BHIM or your bank app → <strong>Pay to UPI ID</strong> (or "Pay anyone") → paste it.</span></li>
+                <li class="flex gap-2.5 items-start"><span class="w-6 h-6 shrink-0 rounded-full bg-yellow-300 border-2 border-neutral-950 text-xs font-black flex items-center justify-center">3</span>
+                    <span class="text-xs font-bold text-neutral-700 dark:text-neutral-300 pt-0.5">Enter <strong>${supportAmt ? '₹' + Number(supportAmt).toLocaleString('en-IN') : 'any amount'}</strong> and pay. It should show the name <strong>${esc(SUPPORT_CONFIG.payeeName)}</strong>.</span></li>
+            </ol>
+            <details class="group border-t-2 border-dashed border-neutral-300 dark:border-neutral-800 pt-2.5">
+                <summary class="list-none cursor-pointer row"><span class="text-xs font-black uppercase">📷 Or scan a QR / open your app</span><span class="text-[11px] font-black text-neutral-500 group-open:rotate-180 transition">▾</span></summary>
+                <div class="pt-3 space-y-2.5 text-center">
+                    <div class="w-48 h-48 mx-auto p-2 bg-white rounded-2xl border-[3px] border-neutral-950 shadow-[4px_4px_0px_#0a0a0a]">${qrSVG(upiLink(supportAmt))}</div>
+                    <p class="text-[11px] font-bold text-neutral-600 dark:text-neutral-400">Scan from another phone, then type the amount.</p>
+                    <a href="${upiLink(supportAmt)}" class="block w-full py-2.5 btn text-xs bg-emerald-400 hover:bg-emerald-300 text-neutral-950 pop-btn">📱 Open my UPI app</a>
+                </div>
+            </details>
+            <p class="text-[11px] text-neutral-500 leading-relaxed">Payments go straight to ${esc(SUPPORT_CONFIG.payeeName)}, QuitSmart's creator, through UPI. QuitSmart never sees your bank details.</p>
         </div>
         <button type="button" onclick="markSupported()" class="w-full py-3 btn text-sm bg-yellow-300 hover:bg-yellow-200 text-neutral-950 pop-btn">💛 I've Supported. Thank You!</button>`
         : `<div class="card pop-card text-center space-y-2">
@@ -6087,7 +6272,7 @@ const LEGAL_DOCS = {
 <ul>
 <li><strong>What's stored:</strong> your email address, and a copy of your app progress (the items in section 1, including journal notes and cravings). Your avatar photo is never uploaded.</li>
 <li><strong>Why:</strong> to sign you in, back up your progress, sync it across your devices, and show how many friends joined with your invite link.</li>
-<li><strong>Where:</strong> with our cloud database provider, Supabase, whose servers may be outside India. Access is locked so that only you can read your data.</li>
+<li><strong>Where:</strong> with our cloud database provider, Supabase, whose servers may be outside India. Other users can never see it. We (the app's operators) only see combined totals, such as how many people have signed up, and we don't look at your individual progress or notes unless you ask us to help with a problem.</li>
 <li><strong>Invites:</strong> if you join through a friend's link, we record their invite code on your account so they can earn the "Bring a Friend" achievement. They see only a count, never your email or progress.</li>
 <li><strong>How long:</strong> until you delete your account. Settings → Delete my account removes your login, cloud copy and invite records straight away. Signing out keeps your data in your account. The provider's routine backups expire on their own schedule.</li>
 <li><strong>Withdrawing consent:</strong> deleting your account withdraws your consent. The app keeps working on your device without an account.</li>
@@ -6129,6 +6314,9 @@ function maybeAskLegal() {
         <button type="button" onclick="acceptLegalNow()" class="w-full py-3 btn text-sm bg-emerald-400 text-neutral-950 pop-btn">I'm 18+ and I understand</button>
     </div>`);
 }
+/* ---------- Brand: New Growth mark (refined) ---------- */
+const LOGO_MARK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="92" fill="#fde047" stroke="#0a0a0a" stroke-width="6"/><g transform="rotate(24 94 146)"><rect x="28" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="28" y="135.0" width="22" height="22" rx="5" fill="#fb923c" stroke="#0a0a0a" stroke-width="6"/><path d="M94,135.0 l-5,5 5,4 -5,5 5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><g transform="rotate(-24 106 146)"><rect x="106" y="135.0" width="66" height="22" rx="5" fill="#ffffff" stroke="#0a0a0a" stroke-width="6"/><rect x="156" y="135.0" width="16" height="22" rx="4" fill="#a8a29e" stroke="#0a0a0a" stroke-width="6"/><path d="M106,135.0 l5,5 -5,4 5,5 -5,4" fill="none" stroke="#0a0a0a" stroke-width="3.5" stroke-linejoin="round"/></g><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#0a0a0a" stroke-width="13" stroke-linecap="round"/><path d="M100,146 C100,118 96,96 100,70" fill="none" stroke="#047857" stroke-width="6" stroke-linecap="round"/><path d="M99,108 C72,108 56,90 54,64 C82,64 98,82 99,108Z" fill="#34d399" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M96,104 C84,96 74,86 66,74" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/><path d="M101,86 C130,84 148,66 150,38 C118,38 101,58 101,86Z" fill="#22c55e" stroke="#0a0a0a" stroke-width="6" stroke-linejoin="round"/><path d="M104,82 C118,70 130,58 140,46" fill="none" stroke="#047857" stroke-width="3" stroke-linecap="round"/></svg>';
+const LOGO_SPROUT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M20,40 C20,30 19,24 20,16" fill="none" stroke="#047857" stroke-width="4" stroke-linecap="round"/><path d="M19.5,27 C12,27 7,22 6,14 C14,14 19,19 19.5,27Z" fill="#34d399" stroke="#0a0a0a" stroke-width="2.2" stroke-linejoin="round"/><path d="M20.5,21 C28,20 33,15 34,7 C26,7 20.5,12 20.5,21Z" fill="#34d399" stroke="#0a0a0a" stroke-width="2.2" stroke-linejoin="round"/></svg>';
 /* ============================================================
    CLOUD (optional): email-code sign-in, sync, invites
    Supabase via plain fetch (no SDK). The app works fully without it.
@@ -6518,6 +6706,26 @@ function shareStats() {
         tiles: [['PLAN DAYS DONE', done + ' / 6', '#fde047'], ['CRAVINGS LOGGED', String(S.cravings.length), '#7dd3fc'], ['FREEDOM DAY', done >= 6 ? 'READY' : 'SOON', '#6ee7b7']]
     };
 }
+async function drawLockup(c, cx, cy, h) {
+    const markImg = await svgToImage(LOGO_MARK_SVG), sproutImg = await svgToImage(LOGO_SPROUT_SVG);
+    const fs = Math.round(h * 0.62);
+    c.font = '900 ' + fs + 'px "Exo 2", system-ui, sans-serif';
+    const parts = [['Qu', '#0a0a0a'], ['\u0131', '#0a0a0a'], ['t', '#0a0a0a'], ['Smart', '#047857']];
+    const ls = -fs * 0.03, widths = parts.map(p => c.measureText(p[0]).width + ls);
+    const textW = widths.reduce((a, b) => a + b, 0), gap = h * 0.16, total = h + gap + textW;
+    // white pill behind for contrast on any background
+    popBox(c, cx - total / 2 - 28, cy - h / 2 - 16, total + 56, h + 32, '#ffffff', (h + 32) / 2, 8);
+    let x = cx - total / 2;
+    if (markImg) c.drawImage(markImg, x, cy - h / 2, h, h);
+    x += h + gap;
+    const base = cy + fs * 0.36;
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    parts.forEach((p, i) => {
+        c.fillStyle = p[1]; c.fillText(p[0], x, base);
+        if (i === 1 && sproutImg) { const sw = fs * 0.5; c.drawImage(sproutImg, x + widths[i] / 2 - sw / 2 - ls / 2, base - fs * 0.68 - sw, sw, sw); }
+        x += widths[i];
+    });
+}
 async function drawShare() {
     try { await document.fonts.load('900 80px "Exo 2"'); } catch (e) {}
     const W = 1080, H = SHARE.format === 'story' ? 1920 : 1080, sq = H === 1080;
@@ -6527,12 +6735,9 @@ async function drawShare() {
     const quest = SHARE.kind === 'quest';
     background(c, W, H, badge ? '#fde047' : quest ? '#fda4af' : S.phase === 'free' ? '#6ee7b7' : '#fde047');
 
-    // Wordmark
+    // Logo lockup: New Growth mark + "QuitSmart" wordmark with the sprout over the i
     const top = sq ? 60 : 120;
-    c.save(); c.translate(W / 2, top + 50); c.rotate(-0.03);
-    popBox(c, -250, -50, 500, 100, '#0a0a0a', 24, 8);
-    textC(c, 'QUITSMART', 0, 26, 64, '#fde047', 460);
-    c.restore();
+    await drawLockup(c, W / 2, top + 50, sq ? 92 : 104);
 
     const st = shareStats();
     let y = top + (sq ? 150 : 230);
@@ -6771,6 +6976,7 @@ function checkIncomingSharedBadge() {
     } catch (e) {}
 }
 document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.classList && e.target.classList.contains('qnode')) { e.preventDefault(); selectQuestNode(e.target.getAttribute('data-node')); return; }
     if (e.key === 'Escape') { closeSheet(); closeBadgeModal(); closeSettings(); if (!$('session-view').classList.contains('hidden')) closeSession(); if (!$('chess-view').classList.contains('hidden')) closeChess(); if (!$('science-view').classList.contains('hidden')) closeScience(); if (!$('battle-view').classList.contains('hidden')) closeBattle(); if (!$('support-view').classList.contains('hidden')) closeSupport(); if (!$('legal-view').classList.contains('hidden')) closeLegal(); }
 });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && S) { rollover(); renderHome(); if (typeof cloudOnOpen === 'function' && Date.now() - (window.__lastPull || 0) > 60000) { window.__lastPull = Date.now(); cloudOnOpen(); } } });

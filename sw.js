@@ -2,8 +2,8 @@
    - The app page: network first (so updates appear), cached copy when offline.
    - Fonts, styles, icons: cached after first use.
    - Supabase (accounts, sync, research) is NEVER cached. */
-const VERSION = 'qs-v1';
-const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png'];
+const VERSION = 'qs-v2';
+const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/favicon-32.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
