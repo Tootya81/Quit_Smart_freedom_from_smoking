@@ -29,6 +29,8 @@ A single-page web app that helps people stop smoking without relying on willpowe
 | `index.html` | The whole app (HTML + CSS + JS in one file) |
 | `netlify.toml` | Netlify settings: no build step, publish the repo root |
 | `supabase/setup.sql` | One-time database setup for optional accounts, sync and invites |
+| `supabase/research.sql` | One-time setup for the optional anonymous research table |
+| `manifest.webmanifest`, `sw.js`, `icons/` | Installable app (home-screen icon, works offline) |
 
 ## Deploy on Netlify
 1. Netlify → **Add new site → Import an existing project → GitHub** → pick this repo.
@@ -46,10 +48,14 @@ Everything works offline in the browser (`localStorage`). Signing in is optional
 - Auth: email one-time code. The Magic Link (and Confirm sign up) email template must include `{{ .Token }}`. Configure custom SMTP before launch; the built-in sender only allows a few emails an hour.
 - Synced: the app state (minus the avatar photo). Invite links use `?ref=CODE`; a friend counts once they sign in and have saved progress.
 - Legal texts and the grievance contact live in `LEGAL_CONFIG` (search `const LEGAL_CONFIG`).
+- Optional research: run `supabase/research.sql`. Results: SQL Editor → `select * from research_summary;` (groups under 5 people are hidden). Rows are never linked to accounts.
 
 ## Roadmap
 - [x] Supabase auth + sync + invites (row-level security)
-- [ ] Installable app (PWA) with push notifications (needs Supabase)
+- [x] Installable app (PWA, offline)
+- [x] Shareable milestone images
+- [x] Opt-in anonymous research
+- [ ] Push reminders (needs a scheduled Supabase Edge Function + web push keys)
 - [ ] Custom domain
 
 *General information, not medical advice. India National Tobacco Quitline: 1800-112-356.*

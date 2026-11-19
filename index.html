@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuitSmart - Freedom from smoking</title>
 
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#059669">
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="QuitSmart">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
@@ -312,78 +319,53 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                    <button type="button" onclick="toggleTheme()" class="px-2.5 py-1.5 btn text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 pop-btn" title="Toggle theme">
-                        <span id="theme-toggle-icon">🌙</span> <span id="theme-toggle-label" class="hidden sm:inline">Dark</span>
-                    </button>
                     <button type="button" onclick="openSettings()" class="relative w-10 h-10 rounded-full cursor-pointer hover:scale-105 transition" title="Profile &amp; settings" aria-label="Profile and settings">
                         <span id="header-avatar" class="block w-full h-full"></span>
                         <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-yellow-300 border-2 border-neutral-950 text-[10px] flex items-center justify-center">⚙️</span>
                     </button>
                 </div>
             </div>
-            <nav class="max-w-xl mx-auto px-3 sm:px-4 pb-2.5">
-                <div id="nav-strip" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
-                    <button type="button" data-tab="home" onclick="switchTab('home')" class="nav-tab">Home</button>
-                    <button type="button" data-tab="plan" onclick="switchTab('plan')" class="nav-tab">Plan</button>
-                    <button type="button" data-tab="sos" onclick="switchTab('sos')" class="nav-tab">SOS</button>
-                    <button type="button" data-tab="journal" onclick="switchTab('journal')" class="nav-tab">Journal</button>
-                    <button type="button" data-tab="body" onclick="switchTab('body')" class="nav-tab">Body</button>
-                    <button type="button" data-tab="quest" onclick="switchTab('quest')" class="nav-tab">⚔️ Quest</button>
-                    <button type="button" data-tab="medals" onclick="switchTab('medals')" class="nav-tab">Achievements</button>
-                </div>
-            </nav>
         </header>
 
-        <main class="flex-1 w-full max-w-xl mx-auto px-3 sm:px-4 py-4 pb-28 space-y-4">
+        <main class="flex-1 w-full max-w-xl mx-auto px-3 sm:px-4 py-4 pb-36 space-y-4">
 
             <!-- ================= HOME ================= -->
             <section id="tab-home" class="space-y-4">
                 <div id="home-phase"></div>
+                <div id="home-support"></div>
 
-                <!-- Daily Freedom Rings -->
-                <div class="card pop-card sm:p-5 space-y-4">
+                <!-- Today: rings + rituals in one card -->
+                <div class="card pop-card space-y-3">
                     <div class="row">
-                        <div>
-                            <h2 class="text-base font-black uppercase tracking-tight text-neutral-950 dark:text-white">Daily Freedom Rings</h2>
-                            <p class="muted">Close all 3 today. They reset at midnight.</p>
-                        </div>
+                        <h2 class="text-base font-black uppercase tracking-tight text-neutral-950 dark:text-white">Today</h2>
                         <button type="button" id="zero-urge-btn" onclick="toggleZeroUrgeDay()" class="px-3 py-1.5 btn text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 pop-btn">No Cravings Today</button>
                     </div>
-                    <div class="flex flex-col sm:flex-row items-center gap-4">
-                        <div class="relative w-36 h-36 shrink-0 flex items-center justify-center">
-                            <svg class="w-36 h-36 -rotate-90" viewBox="0 0 140 140">
-                                <circle cx="70" cy="70" r="58" fill="none" stroke="currentColor" stroke-width="10" class="text-neutral-200 dark:text-neutral-800"/>
-                                <circle id="ring-outer" cx="70" cy="70" r="58" fill="none" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-dasharray="364.4" stroke-dashoffset="364.4" class="transition-all duration-500"/>
-                                <circle cx="70" cy="70" r="44" fill="none" stroke="currentColor" stroke-width="10" class="text-neutral-200 dark:text-neutral-800"/>
-                                <circle id="ring-middle" cx="70" cy="70" r="44" fill="none" stroke="#38bdf8" stroke-width="10" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" class="transition-all duration-500"/>
-                                <circle cx="70" cy="70" r="30" fill="none" stroke="currentColor" stroke-width="10" class="text-neutral-200 dark:text-neutral-800"/>
-                                <circle id="ring-inner" cx="70" cy="70" r="30" fill="none" stroke="#facc15" stroke-width="10" stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="188.5" class="transition-all duration-500"/>
+                    <div class="flex items-center gap-4">
+                        <div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
+                            <svg class="w-24 h-24 -rotate-90" viewBox="0 0 140 140">
+                                <circle cx="70" cy="70" r="58" fill="none" stroke="currentColor" stroke-width="12" class="text-neutral-200 dark:text-neutral-800"/>
+                                <circle id="ring-outer" cx="70" cy="70" r="58" fill="none" stroke="#10b981" stroke-width="12" stroke-linecap="round" stroke-dasharray="364.4" stroke-dashoffset="364.4" class="transition-all duration-500"/>
+                                <circle cx="70" cy="70" r="44" fill="none" stroke="currentColor" stroke-width="12" class="text-neutral-200 dark:text-neutral-800"/>
+                                <circle id="ring-middle" cx="70" cy="70" r="44" fill="none" stroke="#38bdf8" stroke-width="12" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="276.5" class="transition-all duration-500"/>
+                                <circle cx="70" cy="70" r="30" fill="none" stroke="currentColor" stroke-width="12" class="text-neutral-200 dark:text-neutral-800"/>
+                                <circle id="ring-inner" cx="70" cy="70" r="30" fill="none" stroke="#facc15" stroke-width="12" stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="188.5" class="transition-all duration-500"/>
                             </svg>
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                <span id="rings-center-pct" class="text-lg font-black text-neutral-950 dark:text-white">0%</span>
-                                <span class="text-[10px] font-extrabold uppercase text-neutral-500">Closed</span>
-                            </div>
+                            <span id="rings-center-pct" class="absolute text-sm font-black text-neutral-950 dark:text-white">0%</span>
                         </div>
-                        <div class="flex-1 w-full space-y-2.5">
-                            <div class="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800">
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500 border border-neutral-950"></span><span id="ring-outer-name" class="text-xs font-extrabold uppercase">Checked In</span></div>
-                                <span id="ring-outer-label" class="text-xs font-black text-emerald-600 dark:text-emerald-400">0 / 1</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800">
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-400 border border-neutral-950"></span><span class="text-xs font-extrabold uppercase">Rituals Done</span></div>
-                                <span id="ring-middle-label" class="text-xs font-black text-sky-600 dark:text-sky-400">0 / 3</span>
-                            </div>
-                            <div class="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800">
-                                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-400 border border-neutral-950"></span><span class="text-xs font-extrabold uppercase">Mindful Moments</span></div>
-                                <span id="ring-inner-label" class="text-xs font-black text-amber-600 dark:text-yellow-300">0 / 2</span>
-                            </div>
-                            <p class="text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug">Mindful moments = a breathing or grounding session, a journal entry, a logged craving or a plan step.</p>
+                        <div class="flex-1 min-w-0 space-y-1.5">
+                            <div class="row text-xs"><span class="flex items-center gap-2 font-extrabold uppercase"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-neutral-950"></span><span id="ring-outer-name">Checked In</span></span><span id="ring-outer-label" class="font-black text-emerald-600 dark:text-emerald-400">0 / 1</span></div>
+                            <div class="row text-xs"><span class="flex items-center gap-2 font-extrabold uppercase"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 border border-neutral-950"></span>Rituals</span><span id="ring-middle-label" class="font-black text-sky-600 dark:text-sky-400">0 / 3</span></div>
+                            <div class="row text-xs"><span class="flex items-center gap-2 font-extrabold uppercase" title="A breathing or grounding session, a journal entry, a logged craving or a plan step"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400 border border-neutral-950"></span>Mindful</span><span id="ring-inner-label" class="font-black text-amber-600 dark:text-yellow-300">0 / 2</span></div>
                         </div>
                     </div>
+                    <details id="rituals-details" class="group border-t-2 border-dashed border-neutral-300 dark:border-neutral-800 pt-2.5">
+                        <summary class="list-none cursor-pointer row"><span class="text-xs font-black uppercase">✨ Today's rituals <span id="rituals-count" class="text-neutral-500"></span></span><span class="text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 group-open:hidden">Open ▾</span><span class="text-[11px] font-black uppercase text-neutral-500 hidden group-open:inline">Close ▴</span></summary>
+                        <div id="home-rituals" class="pt-2.5"></div>
+                    </details>
                 </div>
 
-                <!-- Daily truth (rotates every day: a small variable reward for opening the app) -->
-                <div class="card pop-card space-y-2.5 bg-yellow-50 benday-surface">
+                <!-- Daily truth -->
+                <div class="card pop-card space-y-2 bg-yellow-50 benday-surface">
                     <div class="row">
                         <span class="tag bg-emerald-300 text-neutral-950">Today's Truth</span>
                         <button type="button" onclick="nextTruth()" class="text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer">Another ↻</button>
@@ -391,32 +373,12 @@
                     <p id="home-truth" class="text-sm font-bold text-neutral-900 dark:text-neutral-100 leading-relaxed"></p>
                 </div>
 
-                <div id="home-goal"></div>
-
+                <!-- Two compact tiles: body + reward goal -->
                 <div class="grid grid-cols-2 gap-3">
-                    <button type="button" onclick="switchTab('sos')" class="p-4 rounded-2xl text-left bg-rose-500 text-white pop-btn cursor-pointer space-y-1">
-                        <span class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-neutral-950 text-yellow-300">Craving SOS</span>
-                        <p class="text-sm font-black uppercase">Ride the Wave</p>
-                        <p class="text-xs font-semibold opacity-90">Breathing, grounding &amp; your own reasons →</p>
-                    </button>
-                    <button type="button" onclick="switchTab('journal')" class="p-4 rounded-2xl text-left bg-sky-300 text-neutral-950 pop-btn cursor-pointer space-y-1">
-                        <span class="inline-block text-[10px] font-black uppercase px-2 py-0.5 rounded bg-neutral-950 text-white">Your Patterns</span>
-                        <p class="text-sm font-black uppercase">Trigger Insights</p>
-                        <p class="text-xs font-bold text-neutral-800">See when &amp; why urges show up →</p>
-                    </button>
+                    <button type="button" id="home-clearance" onclick="switchTab('body')" class="p-3.5 rounded-2xl text-left bg-emerald-50 dark:bg-neutral-900 pop-btn cursor-pointer space-y-1.5"></button>
+                    <div id="home-goal"></div>
                 </div>
 
-                <div id="home-rituals"></div>
-                <div id="home-support"></div>
-
-                <div id="home-clearance" class="card pop-card space-y-2.5">
-                    <div class="row">
-                        <span class="text-xs font-black uppercase tracking-wider text-neutral-600 dark:text-neutral-400">First 72 Hours • Withdrawal Peak</span>
-                        <span id="clearance-pct-label" class="text-xs font-black text-emerald-600 dark:text-emerald-400">0%</span>
-                    </div>
-                    <div class="bar h-3.5"><div id="clearance-bar" class="h-full bg-emerald-400 transition-all duration-500" style="width:0%"></div></div>
-                    <p id="clearance-caption" class="text-xs font-semibold text-neutral-600 dark:text-neutral-400"></p>
-                </div>
                 <p class="text-center text-[11px] font-bold text-neutral-500 pt-2">QuitSmart is free forever • <button type="button" onclick="openSupport()" class="underline decoration-dotted hover:text-amber-600 cursor-pointer">💛 Support</button> • <button type="button" onclick="openScience()" class="underline decoration-dotted hover:text-sky-600 cursor-pointer">📚 Science</button><br><span class="font-semibold">Self-help, not medical advice. Always check with your doctor.</span> <button type="button" onclick="openLegal('disclaimer')" class="underline decoration-dotted hover:text-sky-600 cursor-pointer">Disclaimer</button> • <button type="button" onclick="openLegal('terms')" class="underline decoration-dotted hover:text-sky-600 cursor-pointer">Terms</button> • <button type="button" onclick="openLegal('privacy')" class="underline decoration-dotted hover:text-sky-600 cursor-pointer">Privacy</button></p>
             </section>
 
@@ -505,12 +467,10 @@
                         <button type="button" id="mind-mode-grounding" onclick="selectMindfulnessMode('grounding')" class="seg">5-4-3-2-1</button>
                     </div>
 
-                    <div class="bg-sky-50/80 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700 rounded-2xl p-3.5 space-y-2.5 text-left">
-                        <div class="row">
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded bg-sky-300 text-neutral-950 border border-neutral-950">Peaceful Sounds</span>
-                                <span id="ambient-status-label" class="text-xs font-bold text-neutral-600 dark:text-neutral-400">Off</span>
-                            </div>
+                    <details class="group bg-sky-50/80 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700 rounded-2xl px-3.5 py-2.5 text-left">
+                        <summary class="list-none cursor-pointer row"><span class="flex items-center gap-2"><span class="text-xs font-black uppercase tracking-wider">🎧 Peaceful sounds</span><span id="ambient-status-label" class="text-xs font-bold text-neutral-600 dark:text-neutral-400">Off</span></span><span class="text-[11px] font-black uppercase text-neutral-500 group-open:rotate-180 transition">▾</span></summary>
+                        <div class="row pt-2.5">
+                            <span></span>
                             <div class="flex items-center gap-2">
                                 <label for="ambient-volume-slider" class="text-[11px] font-extrabold uppercase text-neutral-500">Vol</label>
                                 <input type="range" id="ambient-volume-slider" min="5" max="100" value="40" oninput="setAmbientVolume(this.value)" class="w-20 cursor-pointer">
@@ -523,7 +483,7 @@
                             <button type="button" id="sound-btn-forest" onclick="setAmbientSound('forest')" class="seg">Forest</button>
                             <button type="button" id="sound-btn-zen" onclick="setAmbientSound('zen')" class="seg">Hum</button>
                         </div>
-                    </div>
+                    </details>
 
                     <div id="timed-meditation-panel" class="space-y-4">
                         <div class="relative w-48 h-48 mx-auto flex items-center justify-center my-1">
@@ -557,18 +517,12 @@
                 </div>
 
                 <!-- Enjoy while it passes -->
-                <div class="card pop-card space-y-2.5">
-                    <div class="row"><span class="tag bg-sky-300 text-neutral-950">While the wave passes</span><span class="muted">Enjoy it. You're not missing anything.</span></div>
-                    <button type="button" onclick="openChess()" class="w-full p-3 rounded-2xl text-left bg-yellow-50 dark:bg-neutral-950 pop-btn cursor-pointer flex items-center gap-3">
-                        <span class="text-4xl leading-none">♞</span>
-                        <span class="min-w-0"><span class="block text-sm font-black uppercase text-neutral-950 dark:text-white">Play Chess vs a Bot</span>
-                        <span class="block text-xs font-semibold text-neutral-600 dark:text-neutral-400">4 levels: ≈800 · 1200 · 1500 · 1800. Your game is saved if you leave.</span></span>
-                    </button>
-                    <button type="button" onclick="switchTab('quest')" class="w-full p-3 rounded-2xl text-left bg-rose-50 dark:bg-neutral-950 pop-btn cursor-pointer flex items-center gap-3">
-                        <span class="text-4xl leading-none">⚔️</span>
-                        <span class="min-w-0"><span class="block text-sm font-black uppercase text-neutral-950 dark:text-white">Unmask a Trap Monster</span>
-                        <span class="block text-xs font-semibold text-neutral-600 dark:text-neutral-400">Freedom Quest: card battles powered by your real progress.</span></span>
-                    </button>
+                <div class="space-y-2">
+                    <p class="lbl">While the wave passes • enjoy it, you're not missing anything</p>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button type="button" onclick="openChess()" class="p-3 rounded-2xl text-left bg-yellow-50 dark:bg-neutral-900 pop-btn cursor-pointer flex items-center gap-2.5"><span class="text-3xl leading-none">♞</span><span class="text-xs font-black uppercase leading-tight">Play chess<br><span class="text-[10px] text-neutral-500">vs a bot</span></span></button>
+                        <button type="button" onclick="switchTab('quest')" class="p-3 rounded-2xl text-left bg-rose-50 dark:bg-neutral-900 pop-btn cursor-pointer flex items-center gap-2.5"><span class="text-3xl leading-none">⚔️</span><span class="text-xs font-black uppercase leading-tight">Freedom Quest<br><span class="text-[10px] text-neutral-500">card battle</span></span></button>
+                    </div>
                 </div>
 
                 <!-- Truth card -->
@@ -606,13 +560,14 @@
                         <p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed"><strong>How this page helps:</strong> every craving you log in SOS (and every cigarette you log during prep) records its trigger and time. Below, you'll see <em>your</em> loop: which triggers fire most and when. Once you can see it, you can break it where it's weakest, between the urge and the cigarette, by letting the urge pass.</p>
                     </div>
                 </details>
-                <div id="journal-insights" class="space-y-4"></div>
                 <div id="journal-write"></div>
+                <div id="journal-insights" class="space-y-4"></div>
                 <div id="journal-lists" class="space-y-4"></div>
             </section>
 
             <!-- ================= BODY ================= -->
             <section id="tab-body" class="hidden space-y-4">
+                <button type="button" onclick="switchTab('home')" class="text-xs font-black uppercase text-sky-700 dark:text-sky-400 hover:underline cursor-pointer">← Home</button>
                 <div>
                     <h2 class="h2">Body Recovery Timeline</h2>
                     <p class="sub">What typically happens after your last cigarette, from 20 minutes to 15 years.</p>
@@ -623,10 +578,12 @@
             </section>
 
             <!-- ================= QUEST ================= -->
-            <section id="tab-quest" class="hidden space-y-4"><div id="quest-root" class="space-y-4"></div></section>
+            <section id="tab-quest" class="hidden space-y-4">
+                <div class="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-950 dark:border-neutral-700"><button type="button" onclick="switchTab('medals')" class="seg seg-off py-2.5">🏆 Achievements</button><button type="button" onclick="switchTab('quest')" class="seg seg-on py-2.5">⚔️ Freedom Quest</button></div><div id="quest-root" class="space-y-4"></div></section>
 
             <!-- ================= MEDALS ================= -->
             <section id="tab-medals" class="hidden space-y-4">
+                <div class="grid grid-cols-2 gap-1.5 p-1 rounded-2xl bg-white dark:bg-neutral-900 border-2 border-neutral-950 dark:border-neutral-700"><button type="button" onclick="switchTab('medals')" class="seg seg-on py-2.5">🏆 Achievements</button><button type="button" onclick="switchTab('quest')" class="seg seg-off py-2.5">⚔️ Freedom Quest</button></div>
                 <div class="row">
                     <div>
                         <h2 class="h2">Your Achievements</h2>
@@ -641,9 +598,15 @@
         </main>
 
         <!-- Always-one-tap SOS (Hooked: make the right action the easiest action) -->
-        <button type="button" id="sos-fab" onclick="switchTab('sos')" class="fixed z-40 bottom-5 right-4 sm:right-[max(1rem,calc(50vw-17rem))] w-16 h-16 rounded-full bg-rose-500 hover:bg-rose-400 text-white border-2 border-neutral-950 font-black uppercase text-sm cursor-pointer flex flex-col items-center justify-center leading-none" title="Craving SOS">
-            <span class="text-lg">🛟</span><span class="text-[11px] mt-0.5">SOS</span>
-        </button>
+        <nav id="bottom-nav" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-neutral-900/95 backdrop-blur border-t-2 border-neutral-950 dark:border-neutral-800" style="padding-bottom:env(safe-area-inset-bottom)">
+            <div class="max-w-xl mx-auto grid grid-cols-5 items-end gap-1 px-2 pt-1.5 pb-2">
+                <button type="button" data-tab="home" onclick="switchTab('home')" class="nav-tab"><span class="text-xl leading-none">🏠</span><span>Home</span></button>
+                <button type="button" data-tab="plan" onclick="switchTab('plan')" class="nav-tab"><span class="text-xl leading-none">🗺️</span><span>Plan</span></button>
+                <button type="button" id="sos-fab" data-tab="sos" onclick="switchTab('sos')" class="justify-self-center -mt-7 w-[4.25rem] h-[4.25rem] rounded-full bg-rose-500 hover:bg-rose-400 text-white border-[3px] border-neutral-950 font-black uppercase text-xs cursor-pointer flex flex-col items-center justify-center leading-none shadow-[3px_3px_0px_#0a0a0a]" title="Craving SOS" aria-label="Craving SOS"><span class="text-xl">🛟</span>SOS</button>
+                <button type="button" data-tab="journal" onclick="switchTab('journal')" class="nav-tab"><span class="text-xl leading-none">✍️</span><span>Journal</span></button>
+                <button type="button" data-tab="rewards" onclick="switchTab(lastRewardsTab)" class="nav-tab"><span class="text-xl leading-none">🏆</span><span>Rewards</span></button>
+            </div>
+        </nav>
     </div>
 
     <!-- =========================================================================
@@ -753,7 +716,10 @@
             <div id="modal-share-box" class="bg-neutral-100 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700 rounded-xl p-3 space-y-2 text-left">
                 <span class="block text-[10px] font-black uppercase tracking-wider text-neutral-500">Share your win</span>
                 <textarea id="modal-share-text" readonly rows="3" class="w-full px-2.5 py-1.5 rounded-lg text-xs bg-white dark:bg-neutral-900 border border-neutral-950 dark:border-neutral-700 text-neutral-800 dark:text-neutral-200 focus:outline-none"></textarea>
-                <button type="button" onclick="copyBadgeShareText()" class="w-full py-2.5 btn text-xs bg-emerald-400 hover:bg-emerald-300 text-neutral-950 pop-btn">📋 Copy Message</button>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="openShareCard('badge', activeBadgeId())" class="py-2.5 btn text-xs bg-fuchsia-300 text-neutral-950 pop-btn">🖼 Share image</button>
+                    <button type="button" onclick="copyBadgeShareText()" class="py-2.5 btn text-xs bg-emerald-400 hover:bg-emerald-300 text-neutral-950 pop-btn">📋 Copy text</button>
+                </div>
             </div>
         </div>
     </div>
@@ -787,6 +753,8 @@
                     <button type="button" id="settings-fs-l" onclick="applyFontSize('l')" class="seg seg-off"><span class="text-base">A</span> Large</button>
                 </div>
             </div>
+
+            <div id="settings-install" class="space-y-2"></div>
 
             <form onsubmit="saveSettings(event)" class="space-y-3">
                 <div class="grid grid-cols-2 gap-2.5">
@@ -823,6 +791,11 @@
             <div class="space-y-2 pt-2 border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
                 <span class="lbl">Account &amp; Sync (optional)</span>
                 <div id="settings-account" class="space-y-2"></div>
+            </div>
+
+            <div class="space-y-2 pt-2 border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
+                <span class="lbl">Research (optional)</span>
+                <div id="settings-research" class="space-y-2"></div>
             </div>
 
             <div class="space-y-2 pt-2 border-t-2 border-dashed border-neutral-300 dark:border-neutral-800">
@@ -902,7 +875,7 @@ function defaults() {
     return {
         v: 3, name: 'Friend', createdAt: Date.now(),
         phase: 'prep',            // 'prep' (still smoking, doing the plan) | 'free'
-        programStart: Date.now(), unlockAll: false, guideOpen: true,
+        programStart: Date.now(), unlockAll: false, guideOpen: null,
         quitTs: null,
         cigsPerDay: 15, packPrice: 340, packSize: 20, currency: '₹', gender: '',
         whys: [], whyText: '',
@@ -1181,6 +1154,7 @@ window.migrateV2 = function () {
 
 /* ===================== APP SHELL ===================== */
 const TABS = ['home', 'plan', 'sos', 'journal', 'body', 'quest', 'medals'];
+let lastRewardsTab = 'medals';
 
 function enterApp() {
     S = normalize(S); rollover(); save();
@@ -1203,13 +1177,15 @@ function renderAll() {
 window.switchTab = function (t) {
     if (!TABS.includes(t)) t = 'home';
     TABS.forEach(x => $('tab-' + x).classList.toggle('hidden', x !== t));
+    const group = t === 'body' ? 'home' : (t === 'quest' || t === 'medals') ? 'rewards' : t;
+    if (group === 'rewards') lastRewardsTab = t;
     document.querySelectorAll('.nav-tab').forEach(b => {
-        const on = b.getAttribute('data-tab') === t, sos = b.getAttribute('data-tab') === 'sos';
-        b.className = 'nav-tab shrink-0 px-3 py-1.5 rounded-xl text-xs uppercase cursor-pointer ' + (on
-            ? 'font-black ' + (sos ? 'bg-rose-500 text-white' : 'bg-yellow-300 text-neutral-950') + ' pop-btn'
-            : 'font-extrabold bg-white dark:bg-neutral-900 ' + (sos ? 'text-rose-600 dark:text-rose-400' : 'text-neutral-700 dark:text-neutral-300') + ' border-2 border-neutral-950 dark:border-neutral-700 hover:bg-yellow-100 hover:text-neutral-950 transition');
+        const on = b.getAttribute('data-tab') === group;
+        b.className = 'nav-tab flex flex-col items-center gap-0.5 py-1.5 rounded-xl text-[10px] font-black uppercase cursor-pointer transition ' + (on
+            ? 'bg-yellow-300 text-neutral-950 border-2 border-neutral-950 shadow-[2px_2px_0px_#0a0a0a]'
+            : 'text-neutral-600 dark:text-neutral-400 border-2 border-transparent hover:bg-yellow-100 dark:hover:bg-neutral-800');
     });
-    $('sos-fab').classList.toggle('hidden', t === 'sos');
+    $('sos-fab').classList.toggle('ring-4', t === 'sos'); $('sos-fab').classList.toggle('ring-yellow-300', t === 'sos');
     try { history.replaceState(null, '', '#' + t); } catch (e) {}
     if (t === 'sos') { startWave(); renderSOS(); }
     else if (t === 'medals') renderBadges();
@@ -1240,15 +1216,19 @@ function tick() {
 
 function updateClearance(sn) {
     const box = $('home-clearance'); if (!box) return;
-    box.classList.toggle('hidden', S.phase !== 'free');
-    if (S.phase !== 'free') return;
-    const hrs = sn.elapsed / HOUR, pct = Math.min(100, hrs / 72 * 100);
-    $('clearance-bar').style.width = pct.toFixed(1) + '%';
-    $('clearance-pct-label').textContent = pct.toFixed(0) + '%';
-    $('clearance-caption').textContent = pct >= 100
-        ? 'The hardest physical stretch is behind you. Nicotine left your blood within about a day; what\'s left is habit and belief, and you\'re dismantling those.'
-        : hrs < 24 ? 'Nicotine in your blood drops to zero within about a day. The "empty" feeling is it leaving. ' + Math.ceil(72 - hrs) + 'h to the end of the usual peak.'
-            : 'Nicotine is out of your blood. Withdrawal usually peaks in the first 3 days, then eases. ' + Math.ceil(72 - hrs) + 'h to go.';
+    let head, body, pct;
+    if (S.phase !== 'free') { head = '🫁 Your body'; body = 'Recovery starts 20 minutes after your last cigarette.'; pct = 0; }
+    else {
+        const hrs = sn.elapsed / HOUR, next = RECOVERY.find(m => hrs < m.hours), prev = [...RECOVERY].reverse().find(m => hrs >= m.hours);
+        head = '🫁 Body recovery';
+        body = next ? 'Next: <strong>' + esc(next.title) + '</strong> in ' + esc(fmtDur(next.hours - hrs)) : 'Every milestone reached!';
+        pct = next ? Math.min(100, (hrs - (prev ? prev.hours : 0)) / (next.hours - (prev ? prev.hours : 0)) * 100) : 100;
+    }
+    const key = head + body + Math.round(pct);
+    if (box._k === key) return; box._k = key;
+    box.innerHTML = `<span class="block text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400">${head} →</span>
+        <span class="block text-xs font-bold text-neutral-800 dark:text-neutral-200 leading-snug min-h-[2.5rem]">${body}</span>
+        <span class="block h-2 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-950 overflow-hidden"><span class="block h-full bg-emerald-400" style="width:${pct.toFixed(0)}%"></span></span>`;
 }
 
 /* ===================== HOME ===================== */
@@ -1281,7 +1261,7 @@ function renderHome() {
                         <button type="button" onclick="openSlip()" class="py-2.5 btn text-xs bg-white dark:bg-neutral-800 text-neutral-700 dark:text-neutral-200 pop-btn">I Smoked</button>
                     </div>
                 </div>`}
-            <p class="text-[10px] text-neutral-500 dark:text-neutral-400 text-center">Life estimate: ~${minutesPerCig()} min per cigarette not smoked (UCL, 2024).</p>
+            <div class="row"><button type="button" onclick="openShareCard()" class="px-3 py-1.5 btn text-[11px] bg-fuchsia-300 text-neutral-950 pop-btn">📤 Share my progress</button><span class="text-[10px] text-neutral-500 dark:text-neutral-400" title="Estimate: about ${minutesPerCig()} minutes of life per cigarette not smoked (UCL, 2024)">ⓘ ~${minutesPerCig()} min/cig (UCL)</span></div>
         </div>
         <div class="mt-4">${stayHomeCard()}</div>`;
     } else {
@@ -1308,6 +1288,7 @@ function renderHome() {
                 <button type="button" onclick="${done ? "switchTab('plan')" : 'openSession(' + d + ')'}" class="py-3 btn text-xs bg-emerald-400 hover:bg-emerald-300 text-neutral-950 pop-btn">${done ? 'Review Plan →' : (sessCount(d) ? '▶ Continue Session' : '▶ Start Today\'s Session')}</button>
                 <button type="button" onclick="openSmokeAudit()" class="py-3 btn text-xs bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white pop-btn">🚬 Log a Cigarette</button>
             </div>
+            <button type="button" onclick="openShareCard()" class="px-3 py-1.5 btn text-[11px] bg-fuchsia-300 text-neutral-950 pop-btn">📤 Share my journey</button>
             ${avg != null && log.length >= 3 ? `<p class="text-xs font-bold text-neutral-700 dark:text-neutral-300 p-3 rounded-xl bg-yellow-50 dark:bg-neutral-950 border border-neutral-950 dark:border-neutral-700">🔎 Across ${log.length} mindful cigarettes you rated enjoyment <strong>${avg.toFixed(1)}/10</strong>. Is that worth ${money(dailyCost() * 365)} a year?</p>` : `<p class="muted text-center">Before or after each cigarette, tap <strong>Log a Cigarette</strong> and rate how much you actually enjoyed it. You're collecting evidence, not judging yourself.</p>`}
         </div>`;
     }
@@ -1350,41 +1331,50 @@ window.toggleZeroUrgeDay = function () {
 /* ----- Reward goal ----- */
 function renderGoal() {
     const box = $('home-goal'); if (!box) return;
+    const tile = 'w-full h-full p-3.5 rounded-2xl text-left bg-sky-50 dark:bg-neutral-900 pop-btn cursor-pointer space-y-1.5 block';
     if (!S.goal) {
-        box.innerHTML = `
-        <form onsubmit="setGoal(event)" class="card pop-card space-y-2.5">
-            <div class="row"><span class="tag bg-sky-300 text-neutral-950">Reward Goal</span><span class="muted">What will your savings buy?</span></div>
-            <div class="grid grid-cols-3 gap-2">
-                <input id="goal-name" required maxlength="40" placeholder="e.g. Weekend trip" class="col-span-2 inp pop-input">
-                <input id="goal-amount" required type="number" min="1" placeholder="${esc(S.currency)} amount" class="inp pop-input">
-            </div>
-            <button type="submit" class="w-full py-2.5 btn text-xs bg-sky-300 hover:bg-sky-200 text-neutral-950 pop-btn">Set Goal</button>
-        </form>`;
+        box.innerHTML = `<button type="button" onclick="openGoalSheet()" class="${tile}"><span class="block text-[10px] font-black uppercase text-sky-700 dark:text-sky-400">🎯 Reward goal →</span><span class="block text-xs font-bold text-neutral-800 dark:text-neutral-200 leading-snug min-h-[2.5rem]">What will the money you keep buy? Set a goal.</span><span class="block h-2 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-950"></span></button>`;
         return;
     }
+    const g = goalInfo();
+    box.innerHTML = `<button type="button" onclick="openGoalSheet()" class="${tile}"><span class="block text-[10px] font-black uppercase text-sky-700 dark:text-sky-400">🎯 ${g.pct >= 100 && S.phase === 'free' ? 'Goal reached! 🎉' : 'Reward goal'} →</span><span class="block text-xs font-bold text-neutral-800 dark:text-neutral-200 leading-snug min-h-[2.5rem]"><strong>${esc(S.goal.name)}</strong><br>${money(Math.min(g.saved, g.amt))} / ${money(g.amt)}</span><span class="block h-2 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-950 overflow-hidden"><span class="block h-full bg-sky-400" style="width:${g.pct.toFixed(0)}%"></span></span></button>`;
+}
+function goalInfo() {
     const saved = Math.max(0, snap().saved - (S.spentOnRewards || 0)), amt = S.goal.amount, pct = Math.min(100, saved / amt * 100), dc = dailyCost();
     const left = Math.max(0, amt - saved), days = dc > 0 ? Math.ceil(left / dc) : null;
     const eta = S.phase !== 'free' ? 'Savings start on Freedom Day. At your rate, you\'ll have it ' + (days != null ? days + ' days later.' : 'soon.')
         : pct >= 100 ? 'You did it! Go claim your reward. You paid for it with clean air.' : (days != null ? 'About ' + plural(days, 'day') + ' to go.' : '');
-    box.innerHTML = `
-    <div class="card pop-card space-y-2.5">
-        <div class="row">
-            <span class="tag bg-sky-300 text-neutral-950">Reward Goal</span>
-            <div class="flex gap-2">
-                ${pct >= 100 && S.phase === 'free' ? `<button type="button" onclick="claimGoal()" class="text-xs font-black uppercase text-emerald-700 dark:text-emerald-400 hover:underline cursor-pointer">Claimed 🎉</button>` : ''}
-                <button type="button" onclick="clearGoal()" class="text-xs font-black uppercase text-neutral-500 hover:underline cursor-pointer">Change</button>
-            </div>
-        </div>
-        <div class="row"><h3 class="h3">${esc(S.goal.name)}</h3><span class="text-xs font-black tabular-nums">${money(Math.min(saved, amt))} / ${money(amt)}</span></div>
-        <div class="bar"><div class="h-full bg-sky-400 transition-all duration-500" style="width:${pct.toFixed(1)}%"></div></div>
-        <p class="muted font-semibold">${esc(eta)}</p>
-    </div>`;
+    return { saved, amt, pct, eta };
 }
+window.openGoalSheet = function () {
+    if (!S.goal) {
+        openSheet(`<form onsubmit="setGoal(event)" class="space-y-3">
+            <span class="tag bg-sky-300 text-neutral-950">🎯 Reward Goal</span>
+            <h3 class="text-xl font-black uppercase text-neutral-950 dark:text-white">What will your savings buy?</h3>
+            <p class="sub">Pick something you'd love. Every smoke-free day pays for it.</p>
+            <input id="goal-name" required maxlength="40" placeholder="e.g. Weekend trip" class="inp pop-input">
+            <input id="goal-amount" required type="number" min="1" placeholder="Amount (${esc(S.currency)})" class="inp pop-input">
+            <button type="submit" class="w-full py-3 btn text-sm bg-sky-300 hover:bg-sky-200 text-neutral-950 pop-btn">Set Goal</button>
+        </form>`);
+        return;
+    }
+    const g = goalInfo();
+    openSheet(`<div class="space-y-3">
+        <span class="tag bg-sky-300 text-neutral-950">🎯 Reward Goal</span>
+        <div class="row"><h3 class="text-xl font-black uppercase text-neutral-950 dark:text-white">${esc(S.goal.name)}</h3><span class="text-xs font-black tabular-nums">${money(Math.min(g.saved, g.amt))} / ${money(g.amt)}</span></div>
+        <div class="bar"><div class="h-full bg-sky-400" style="width:${g.pct.toFixed(1)}%"></div></div>
+        <p class="sub">${esc(g.eta)}</p>
+        <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="clearGoal(); openGoalSheet()" class="py-2.5 btn text-xs bg-white dark:bg-neutral-800 pop-btn">Change goal</button>
+            ${g.pct >= 100 && S.phase === 'free' ? `<button type="button" onclick="closeSheet(); claimGoal()" class="py-2.5 btn text-xs bg-emerald-400 text-neutral-950 pop-btn">Claimed 🎉</button>` : `<button type="button" onclick="closeSheet()" class="py-2.5 btn text-xs bg-sky-300 text-neutral-950 pop-btn">Done</button>`}
+        </div>
+    </div>`);
+};
 window.setGoal = function (e) {
     e.preventDefault();
     const name = ($('goal-name').value || '').trim(), amount = +$('goal-amount').value;
     if (!name || !(amount > 0)) return;
-    S.goal = { name, amount }; save(); renderGoal(); toast('Goal set: ' + name);
+    S.goal = { name, amount }; save(); renderGoal(); closeSheet(); toast('Goal set: ' + name);
 };
 window.clearGoal = function () { S.goal = null; save(); renderGoal(); };
 window.claimGoal = function () {
@@ -1399,15 +1389,10 @@ window.claimGoal = function () {
 function renderRituals() {
     const box = $('home-rituals'); if (!box) return;
     const done = S.habits.filter(h => h.doneToday).length;
+    if ($('rituals-count')) $('rituals-count').textContent = done + '/' + S.habits.length;
     box.innerHTML = `
-    <div class="card pop-card space-y-3">
-        <div class="row">
-            <div>
-                <h2 class="text-base font-black uppercase tracking-tight text-neutral-950 dark:text-white">Today's Rituals</h2>
-                <p class="muted">Not substitutes (you're not missing anything). Just good things for a free person.</p>
-            </div>
-            <span class="text-xs font-black uppercase px-3 py-1 rounded-lg bg-sky-300 text-neutral-950 border-2 border-neutral-950 shrink-0">${done}/${S.habits.length}</span>
-        </div>
+    <div class="space-y-3">
+        <p class="muted">Not substitutes (you're not missing anything). Just good things for a free person.</p>
         <div class="space-y-2">
         ${S.habits.length ? S.habits.map(h => `
             <div class="flex items-center justify-between gap-2.5 p-2.5 rounded-xl border-2 border-neutral-950 dark:border-neutral-700 ${h.doneToday ? 'bg-emerald-50 dark:bg-emerald-950/30' : 'bg-white dark:bg-neutral-950'}">
@@ -1522,7 +1507,7 @@ const RITUAL_STEPS = [
     'I\'m a non-smoker from this moment, and I\'m glad'
 ];
 
-window.toggleProgramGuide = function () { S.guideOpen = !S.guideOpen; save(); renderPlan(); };
+window.toggleProgramGuide = function () { S.guideOpen = guideIsOpen() ? 'closed' : 'open'; save(); renderPlan(); };
 window.toggleProgramUnlockMode = function () {
     if (S.phase === 'free') { toast('All steps are open once you\'re free'); return; }
     S.unlockAll = !S.unlockAll; save(); renderPlan(); renderHome();
@@ -1923,15 +1908,18 @@ function learnCardHtml(c) {
 }
 
 /* ----- Plan tab: day cards + library ----- */
+function guideIsOpen() { return S.guideOpen === 'open' ? true : S.guideOpen === 'closed' ? false : tCompleted().length === 0; }
 function renderPlan() {
     if (!S) return;
     const done = tCompleted(), upTo = tUnlocked(), stay = isStay();
     renderPlanHeader(stay);
     $('program-progress-badge').textContent = done.length + ' / 6 Done';
     $('program-unlock-mode-btn').textContent = (S.unlockAll || S.phase === 'free') ? 'All Days Open' : 'Daily Unlock: On';
-    $('program-guide-body').classList.toggle('hidden', !S.guideOpen);
-    $('program-guide-chevron').textContent = S.guideOpen ? 'Hide ▲' : 'Show ▼';
+    const gOpen = guideIsOpen();
+    $('program-guide-body').classList.toggle('hidden', !gOpen);
+    $('program-guide-chevron').textContent = gOpen ? 'Hide ▲' : 'Show ▼';
 
+    const focusItem = tPlan().find(it => it.day <= upTo && !done.includes(it.day)), focus = focusItem ? focusItem.day : -1;
     $('program-days-list').innerHTML = tPlan().map(item => {
         const d = item.day, isDone = done.includes(d), n = sessCount(d);
         if (d > upTo) {
@@ -1943,7 +1931,15 @@ function renderPlan() {
             </div>`;
         }
         const s = tSessions()[d], isToday = !stay && d === planDay() && !isDone;
-        return `<div class="card pop-card space-y-3 ${isToday ? 'ring-4 ring-yellow-300' : ''}">
+        if (d !== focus) {
+            return `<button type="button" onclick="openSession(${d})" class="w-full p-3 rounded-2xl text-left row gap-2 cursor-pointer border-2 border-neutral-950 dark:border-neutral-700 ${isDone ? 'bg-emerald-50 dark:bg-neutral-900' : 'bg-white dark:bg-neutral-900'} hover:bg-yellow-50 dark:hover:bg-neutral-800">
+                <span class="min-w-0"><span class="block text-[10px] font-black uppercase ${isDone ? 'text-emerald-700 dark:text-emerald-400' : 'text-neutral-500'}">${isDone ? '✓ ' : ''}Day ${d} • ${esc(item.tag)}</span>
+                <span class="block text-sm font-black uppercase text-neutral-900 dark:text-white truncate">${esc(item.title)}</span></span>
+                <span class="text-[11px] font-black uppercase shrink-0 ${isDone ? 'text-neutral-500' : 'text-emerald-700 dark:text-emerald-400'}">${isDone ? 'Review' : n ? 'Continue ▶' : 'Start ▶'}</span>
+            </button>`;
+        }
+        return `<div class="card pop-card space-y-3 ring-4 ring-yellow-300">
+            <span class="text-[10px] font-black uppercase text-neutral-500">${isToday || stay ? 'Up next' : 'Today'}</span>
             <div class="row">
                 <span class="text-[11px] font-black uppercase px-2.5 py-0.5 rounded ${isDone ? 'bg-emerald-400' : 'bg-yellow-300'} text-neutral-950 border border-neutral-950">Day ${d} • ${esc(item.tag)}</span>
                 <span class="text-[11px] font-black uppercase ${isDone ? 'text-emerald-600 dark:text-emerald-400' : 'text-neutral-500'}">${isDone ? '✓ Done' : isToday ? 'Today' : '~' + (6 + item.practice().minutes) + ' min'}</span>
@@ -1974,17 +1970,19 @@ function renderLibrary(upTo) {
     PLAN.forEach(p => SESSION[p.day].learn.forEach(c => { seen.add(c); items.push({ day: p.day, c }); }));
     items.push({ day: 6, c: JUST_ONE_CARD });
     if (isStay()) upTo = 6;
-    return `<div class="card pop-card space-y-2.5">
-        <div class="row"><div><h3 class="h3">Learn Library</h3><p class="muted">The science of nicotine, urges and triggers. Re-read anytime.</p>
-        <button type="button" onclick="openScience()" class="mt-1 text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 hover:underline cursor-pointer">📚 Sources, podcasts &amp; talks →</button></div>
-        <span class="tag bg-sky-300 text-neutral-950">${items.filter(x => x.day <= upTo).length}/${items.length}</span></div>
+    return `<details class="card pop-card group">
+        <summary class="list-none cursor-pointer row"><span><span class="block h3">📘 Learn Library</span><span class="block muted">The science of nicotine, urges and triggers</span></span>
+        <span class="flex items-center gap-2 shrink-0"><span class="tag bg-sky-300 text-neutral-950">${items.filter(x => x.day <= upTo).length}/${items.length}</span><span class="text-[11px] font-black uppercase text-neutral-500 group-open:rotate-180 transition">▾</span></span></summary>
+        <div class="space-y-2.5 pt-3">
+        <button type="button" onclick="openScience()" class="text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 hover:underline cursor-pointer">📚 Sources, podcasts &amp; talks →</button>
         ${items.map(({ day, c }) => day > upTo
             ? `<div class="p-2.5 rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 text-xs font-black uppercase text-neutral-400 row"><span>🔒 ${esc(c.title)}</span><span>Day ${day}</span></div>`
             : `<details class="rounded-xl border-2 border-neutral-950 dark:border-neutral-700 bg-white dark:bg-neutral-950 overflow-hidden">
                 <summary class="p-2.5 cursor-pointer list-none row text-xs font-black uppercase"><span>📘 ${esc(c.title)}</span><span class="text-neutral-500">Day ${day} ▾</span></summary>
                 <div class="p-2 pt-0">${learnCardHtml(c).replace('card pop-card', 'card')}</div>
             </details>`).join('')}
-    </div>`;
+        </div>
+    </details>`;
 }
 
 /* ----- Session overlay ----- */
@@ -2641,7 +2639,7 @@ function renderJournal() {
 
     // Lists
     const lists = $('journal-lists');
-    const section = (title, tag, items) => items.length ? `<div class="card pop-card space-y-2"><div class="row"><h3 class="h3">${title}</h3><span class="tag ${tag}">${items.length}</span></div>${items.join('')}</div>` : '';
+    const section = (title, tag, items) => items.length ? `<div class="card pop-card space-y-2"><div class="row"><h3 class="h3">${title}</h3><span class="tag ${tag}">${items.length}</span></div>${items.slice(0, 3).join('')}${items.length > 3 ? `<details class="group space-y-2"><summary class="list-none cursor-pointer text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 pt-1"><span class="group-open:hidden">Show all ${items.length} ▾</span><span class="hidden group-open:inline">Show less ▴</span></summary><div class="space-y-2 pt-2">${items.slice(3).join('')}</div></details>` : ''}</div>` : '';
     const jItems = S.journal.slice().reverse().slice(0, 30).map((j, i) => `<div class="well space-y-1"><div class="row"><span class="text-[10px] font-black uppercase text-neutral-500">${fmtWhen(j.ts)}</span><button type="button" onclick="deleteEntry('journal', ${S.journal.length - 1 - i})" class="text-xs text-neutral-400 hover:text-rose-500 cursor-pointer">✕</button></div><p class="text-xs sm:text-sm text-neutral-800 dark:text-neutral-200 whitespace-pre-wrap">${esc(j.text)}</p></div>`);
     const cItems = cr.slice().reverse().slice(0, 25).map((c, i) => `<div class="flex items-center justify-between gap-2 p-2 rounded-lg border border-neutral-300 dark:border-neutral-800 text-xs">
         <span class="font-black uppercase ${c.outcome === 'passed' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}">${c.outcome === 'passed' ? '✓' : '✕'}</span>
@@ -2854,6 +2852,7 @@ window.openBadgeModal = function (id) {
     $('modal-share-text').value = shareText(b);
     $('badge-modal').classList.remove('hidden');
 };
+window.activeBadgeId = () => activeModalBadgeId;
 window.closeBadgeModal = function () { $('badge-modal').classList.add('hidden'); };
 window.copyBadgeShareText = function () { copyText($('modal-share-text').value); toast('Message copied. Paste it anywhere.'); };
 let lastUnlocked = null;
@@ -2912,6 +2911,8 @@ function medalCard(b) {
     </button>`;
 }
 
+const badgeGroupOpen = {};
+window.badgeGroupOpen = badgeGroupOpen;
 function renderBadges() {
     if (!S) return;
     const badges = computeBadges(), unlocked = badges.filter(b => b.unlocked);
@@ -2944,11 +2945,16 @@ function renderBadges() {
         if (!list.length) return '';
         const got = list.filter(b => b.unlocked).length;
         list.sort((a, b) => (b.unlocked - a.unlocked));
-        return `<div class="col-span-2 sm:col-span-3 flex items-center gap-2 pt-2">
+        if (!(g.key in badgeGroupOpen)) badgeGroupOpen[g.key] = !!(next && list.includes(next));
+        return `<details class="col-span-2 sm:col-span-3 group" ${badgeGroupOpen[g.key] ? 'open' : ''} ontoggle="badgeGroupOpen['${g.key}'] = this.open">
+            <summary class="list-none cursor-pointer flex items-center gap-2 py-1.5">
                 <span class="tag ${g.tag} text-neutral-950">${g.title}</span>
                 <span class="flex-1 border-t-2 border-dashed border-neutral-300 dark:border-neutral-700"></span>
                 <span class="text-[11px] font-black uppercase text-neutral-500 tabular-nums">${got}/${list.length}</span>
-            </div>` + list.map(medalCard).join('');
+                <span class="text-[11px] font-black text-neutral-500 group-open:rotate-180 transition">▾</span>
+            </summary>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2.5">${list.map(medalCard).join('')}</div>
+        </details>`;
     }).join('');
     const lvls = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
     const summary = `<div class="col-span-2 sm:col-span-3 grid grid-cols-5 gap-1.5">${lvls.map(l => { const all = badges.filter(b => b.level === l), got = all.filter(b => b.unlocked).length;
@@ -2960,7 +2966,7 @@ function renderBadges() {
    SETTINGS
 ===================================================================== */
 window.openSettings = function () {
-    renderAccountUI();
+    renderAccountUI(); renderResearchUI(); renderInstallUI();
     if (!S) return;
     const dt = new Date(S.quitTs || Date.now());
     $('settings-quit-datetime').value = dt.getFullYear() + '-' + pad(dt.getMonth() + 1) + '-' + pad(dt.getDate()) + 'T' + pad(dt.getHours()) + ':' + pad(dt.getMinutes());
@@ -4395,6 +4401,7 @@ function renderBattle() {
             <h3 class="text-2xl font-black uppercase text-neutral-950 dark:text-white">${n.id === 'f3' ? 'The Ash Ring Is Broken' : esc(n.name) + ' Falls'}</h3>
             <p class="text-sm font-bold text-neutral-800 dark:text-neutral-200">"${esc(n.truth)}"</p>
             ${n.boss ? (() => { const reg = QREGIONS.find(r => r.nodes.includes(n)); return reg ? `<p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed text-left border-t-2 border-dashed border-neutral-300 dark:border-neutral-700 pt-2.5">📜 ${esc(reg.outro)}</p>` : ''; })() : ''}
+            ${n.id === 'f3' ? `<button type="button" onclick="closeBattle(); openShareCard('quest')" class="w-full py-3 btn text-sm bg-fuchsia-300 text-neutral-950 pop-btn">📤 Share your victory</button>` : ''}
             <button type="button" onclick="closeBattle()" class="w-full py-3 btn text-sm bg-emerald-400 text-neutral-950 pop-btn">Back to the Map →</button>
         </div>`;
     } else if (B.over === 'lost') {
@@ -5974,7 +5981,7 @@ const LEGAL_CONFIG = {
     effective: '19 November 2026',
     appName: 'QuitSmart – Freedom from Smoking',
     operator: 'Siddharth Benninger',
-    contactEmail: '',            // ← add a contact / grievance email before launch
+    contactEmail: 'contact@quitsmart.in',
     grievanceName: 'Siddharth Benninger'
 };
 function legalContact() {
@@ -6032,7 +6039,7 @@ const LEGAL_DOCS = {
     privacy: {
         icon: '🔒', title: 'Privacy Policy', sub: 'Digital Personal Data Protection Act, 2023 • Effective ' + LEGAL_CONFIG.effective,
         body: () => `
-<div class="p-3 rounded-xl bg-emerald-50 dark:bg-neutral-950 border-2 border-emerald-600 not-prose"><p class="text-sm font-bold text-emerald-900 dark:text-emerald-200">In short: everything you enter stays on your device unless you choose to sign in to back it up. We don't run analytics, ads or trackers, and we never sell data.</p></div>
+<div class="p-3 rounded-xl bg-emerald-50 dark:bg-neutral-950 border-2 border-emerald-600 not-prose"><p class="text-sm font-bold text-emerald-900 dark:text-emerald-200">In short: everything you enter stays on your device unless you choose to sign in to back it up. We don't run analytics, ads or trackers, and we never sell data. Anonymous research sharing is optional and off by default.</p></div>
 <p>This policy explains how ${esc(LEGAL_CONFIG.appName)} handles your personal data, in line with India's Digital Personal Data Protection Act, 2023 (DPDP Act) and the DPDP Rules, 2025. ${esc(LEGAL_CONFIG.operator)} is the Data Fiduciary responsible for the app.</p>
 <h4>1. What the app stores, and where</h4>
 <p>To work, the app keeps the following <strong>on your device only</strong> (in your browser's local storage):</p>
@@ -6052,7 +6059,7 @@ const LEGAL_DOCS = {
 <li><strong>Links:</strong> sites you open from the app (research, talks, helplines) have their own privacy policies.</li>
 </ul>
 <h4>3. What we don't do</h4>
-<p>No required sign-up, no analytics, no advertising, no tracking cookies, no profiling, and no selling or sharing of your data.</p>
+<p>No required sign-up, no analytics or ad trackers, no tracking cookies, no profiling, and no selling or sharing of your data. Research sharing happens only if you switch it on (section 7).</p>
 <h4>4. Your control and your rights</h4>
 <ul>
 <li><strong>See and correct:</strong> everything is visible and editable in the app and in Settings.</li>
@@ -6065,8 +6072,16 @@ const LEGAL_DOCS = {
 <p>QuitSmart is only for adults aged 18 or over. We don't knowingly process children's data. If you believe a child is using the app, please contact us.</p>
 <h4>6. Security</h4>
 <p>Your data is protected by your device and browser. Use a screen lock, and keep backup files somewhere private: anyone with the file can read your journal.</p>
-<h4>7. If we add optional anonymous research in future</h4>
-<p>To learn what helps people quit, we may later ask whether you'd like to share <em>anonymous</em> usage statistics, such as an age group (for example 25–34), gender (with "prefer not to say" always available), days smoke-free and which tools helped. This would <strong>never include your name, journal text or photo</strong>, would be <strong>off unless you switch it on</strong>, and could be switched off at any time. Before anything is shared we'll show a separate notice explaining exactly what is collected, why, and how long it's kept. Results would only be reported in combined form (e.g. "people aged 25–34 used breathing most"), never about an individual.</p>
+<h4>7. Optional anonymous research</h4>
+<p>In Settings → Research you can choose to share an <em>anonymous</em> weekly summary to help us learn what helps people quit. It is <strong>off unless you switch it on</strong>, and the screen shows exactly what will be shared before you agree.</p>
+<ul>
+<li><strong>What's shared:</strong> the age group and gender you choose ("prefer not to say" is always available), whether you're preparing or have quit, a days-free range (e.g. 7–13), a cigarettes-per-day range, plan days completed, numbers of cravings logged and passed, slips, your top triggers and most-used tool.</li>
+<li><strong>Never shared:</strong> your name, email, journal or notes, photo, exact dates or location.</li>
+<li><strong>Not linked to you:</strong> your phone makes a random research ID that is sent without your sign-in, and is never stored with your account or cloud backup.</li>
+<li><strong>How it's used:</strong> only in combined results, and groups smaller than 5 people are never reported.</li>
+<li><strong>Stopping:</strong> tap "Stop &amp; delete" at any time. The app deletes every summary linked to your research ID.</li>
+<li><strong>Where:</strong> with our database provider, Supabase (section 8), kept until you stop or for as long as the research is useful.</li>
+</ul>
 <h4>8. Optional account &amp; sync</h4>
 <p>You can choose to sign in with an email one-time code. Only if you do, and only after you agree on the sign-in screen:</p>
 <ul>
@@ -6179,6 +6194,7 @@ const rpc = (fn, body) => api('/rest/v1/rpc/' + fn, { method: 'POST', body: body
 function cloudPayload() {
     const c = JSON.parse(JSON.stringify(S));
     if (c.avatar && c.avatar.photo) delete c.avatar.photo;   // photos never leave the device
+    delete c.research;                                         // research id must never be linkable to an account
     delete c.cloudRefs;
     return c;
 }
@@ -6203,9 +6219,10 @@ async function cloudFetchState() {
     return rows && rows[0] ? { state: rows[0].state, at: Date.parse(rows[0].updated_at) } : null;
 }
 function adoptCloud(row) {
-    const photo = S && S.avatar && S.avatar.photo;
+    const photo = S && S.avatar && S.avatar.photo, research = S && S.research;
     S = normalize(row.state);
     if (photo && S.avatar) S.avatar.photo = photo;
+    if (research) S.research = research; else delete S.research;
     Store.save(S);
     A.syncedAt = row.at; A.dirtyAt = 0; authSave();
 }
@@ -6273,7 +6290,8 @@ function renderSignIn(step, err) {
         openSheet(`<div class="space-y-3">
             <span class="tag bg-emerald-300 text-neutral-950">📬 Check your email</span>
             <h3 class="text-xl font-black uppercase text-neutral-950 dark:text-white">Enter your code</h3>
-            <p class="sub">We sent a code to <strong>${esc(signFlow.email)}</strong>. It may take a minute; check spam too.</p>
+            <p class="sub">We sent an email to <strong>${esc(signFlow.email)}</strong>. It may take a minute; check spam too.</p>
+            <p class="text-xs font-bold px-3 py-2 rounded-xl bg-yellow-50 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700">📧 Got a <strong>link</strong> instead of a code? Just tap it on this phone and you'll be signed in.</p>
             <input type="text" id="si-code" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456" class="inp pop-input text-center text-2xl font-black tracking-[.3em]" oninput="this.value=this.value.replace(/\\D/g,'')">
             ${errBox}
             <button type="button" id="si-verify" onclick="signInVerify()" class="w-full py-3 btn text-sm bg-emerald-400 text-neutral-950 pop-btn">Sign in</button>
@@ -6302,7 +6320,7 @@ window.signInSend = async function (resend) {
     }
     const b = $(resend ? 'si-resend' : 'si-send'); if (b) { b.disabled = true; b.textContent = 'Sending…'; }
     try {
-        await rawFetch('/auth/v1/otp', { method: 'POST', body: { email: signFlow.email, create_user: true } });
+        await rawFetch('/auth/v1/otp?redirect_to=' + encodeURIComponent(appHome()), { method: 'POST', body: { email: signFlow.email, create_user: true } });
         signFlow.sentAt = Date.now(); A = Object.assign(A || {}, { lastEmail: signFlow.email }); authSave();
         renderSignIn('code');
     } catch (e) { renderSignIn(resend ? 'code' : 'email', e.message); }
@@ -6355,6 +6373,31 @@ window.deleteAccountNow = async function () {
     try { await rpc('delete_my_account'); A = null; authSave(); if (S) { S.cloudRefs = 0; Store.save(S); } closeSheet(); renderAll(); renderAccountUI(); toast('Your account and cloud data have been deleted.'); }
     catch (e) { toast(e.message); }
 };
+
+/* ---------- Sign-in by email link (Supabase default emails) ---------- */
+function appHome() { return location.origin + location.pathname; }
+let redirectTokens = null;
+(function captureAuthRedirect() {
+    try {
+        const h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+        if (h.get('access_token') && h.get('refresh_token')) redirectTokens = { access_token: h.get('access_token'), refresh_token: h.get('refresh_token'), expires_in: +h.get('expires_in') || 3600, expires_at: +h.get('expires_at') || 0 };
+        else if (h.get('error_description')) redirectTokens = { error: h.get('error_description').replace(/\+/g, ' ') };
+        if (redirectTokens) history.replaceState(null, '', location.pathname + location.search);
+    } catch (e) {}
+})();
+async function cloudHandleRedirect() {
+    if (!redirectTokens) return false;
+    const t = redirectTokens; redirectTokens = null;
+    if (t.error) { toast(/expired|invalid/i.test(t.error) ? 'That sign-in link has expired. Please ask for a new one.' : t.error); return true; }
+    try {
+        A = Object.assign(A || {}, { access_token: t.access_token });
+        const user = await rawFetch('/auth/v1/user', { auth: true });
+        setSession(Object.assign({}, t, { user }));
+        A.syncedAt = 0; A.dirtyAt = 0; authSave();
+        await afterSignIn();
+    } catch (e) { A = A && A.lastEmail ? { lastEmail: A.lastEmail } : null; authSave(); toast('Could not finish signing in. Please try again.'); }
+    return true;
+}
 
 /* ---------- Invites ---------- */
 async function refreshReferrals(force) {
@@ -6417,6 +6460,298 @@ function renderAccountUI() {
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && signedIn() && A.dirtyAt) cloudPush(true).catch(() => {}); });
 window.addEventListener('online', () => { if (signedIn() && A.dirtyAt) cloudPush().catch(() => {}); });
+/* ============================================================
+   SHARE CARDS: pop-art milestone images drawn on <canvas>
+   Story 1080x1920 (Instagram/WhatsApp status) or square 1080x1080.
+   Nothing is uploaded: the image is made on the phone.
+   ============================================================ */
+const SHARE = { kind: 'progress', badgeId: null, format: 'story', showName: false, showAvatar: true, blob: null, url: null };
+const SITE = 'quitsmart.in';
+
+function svgToImage(svg) {
+    return new Promise(res => {
+        const img = new Image();
+        img.onload = () => res(img); img.onerror = () => res(null);
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.indexOf('xmlns=') > -1 ? svg : svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"'));
+    });
+}
+function rrect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function popBox(c, x, y, w, h, fill, r, sh) {
+    sh = sh == null ? 14 : sh; r = r || 36;
+    c.fillStyle = '#0a0a0a'; rrect(c, x + sh, y + sh, w, h, r); c.fill();
+    c.fillStyle = fill; rrect(c, x, y, w, h, r); c.fill();
+    c.lineWidth = 8; c.strokeStyle = '#0a0a0a'; rrect(c, x, y, w, h, r); c.stroke();
+}
+function fitFont(c, text, maxW, size, weight) {
+    let s = size;
+    do { c.font = (weight || 900) + ' ' + s + 'px "Exo 2", system-ui, sans-serif'; s -= 4; } while (c.measureText(text).width > maxW && s > 20);
+    return s + 4;
+}
+function textC(c, text, x, y, size, color, maxW, weight) {
+    fitFont(c, text, maxW || 2000, size, weight);
+    c.fillStyle = color; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(text, x, y);
+}
+function wrapLines(c, text, maxW) {
+    const words = String(text).split(/\s+/), lines = []; let line = '';
+    words.forEach(w => { const t = line ? line + ' ' + w : w; if (c.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; });
+    if (line) lines.push(line); return lines;
+}
+function background(c, W, H, base) {
+    c.fillStyle = base; c.fillRect(0, 0, W, H);
+    // sunburst
+    c.save(); c.translate(W / 2, H * 0.36); c.fillStyle = 'rgba(255,255,255,.28)';
+    for (let i = 0; i < 24; i++) { c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, Math.max(W, H) * 1.2, i * Math.PI / 12, i * Math.PI / 12 + Math.PI / 24); c.closePath(); c.fill(); }
+    c.restore();
+    // Ben-Day dots
+    c.fillStyle = 'rgba(10,10,10,.07)';
+    for (let y = 0; y < H; y += 28) for (let x = (y / 28) % 2 ? 14 : 0; x < W; x += 28) { c.beginPath(); c.arc(x, y, 4, 0, Math.PI * 2); c.fill(); }
+}
+function shareStats() {
+    const sn = snap();
+    if (S.phase === 'free') return {
+        bigN: String(sn.days), bigL: sn.days === 1 ? 'DAY SMOKE-FREE' : 'DAYS SMOKE-FREE', head: sn.days < 1 ? "I'M FREE!" : 'STILL FREE!',
+        tiles: [['MONEY KEPT', money(sn.saved), '#fde047'], ['CIGS NOT SMOKED', Math.floor(sn.cigs).toLocaleString(), '#7dd3fc'], ['LIFE BACK', sn.lifeH >= 48 ? (sn.lifeH / 24).toFixed(1) + ' days' : Math.round(sn.lifeH) + ' hrs', '#6ee7b7']]
+    };
+    const d = planDay(), done = S.completedDays.length;
+    return {
+        bigN: String(d), bigL: 'OF 6 DAYS', head: 'GETTING FREE',
+        tiles: [['PLAN DAYS DONE', done + ' / 6', '#fde047'], ['CRAVINGS LOGGED', String(S.cravings.length), '#7dd3fc'], ['FREEDOM DAY', done >= 6 ? 'READY' : 'SOON', '#6ee7b7']]
+    };
+}
+async function drawShare() {
+    try { await document.fonts.load('900 80px "Exo 2"'); } catch (e) {}
+    const W = 1080, H = SHARE.format === 'story' ? 1920 : 1080, sq = H === 1080;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const c = cv.getContext('2d');
+    const badge = SHARE.kind === 'badge' ? computeBadges().find(b => b.id === SHARE.badgeId) : null;
+    const quest = SHARE.kind === 'quest';
+    background(c, W, H, badge ? '#fde047' : quest ? '#fda4af' : S.phase === 'free' ? '#6ee7b7' : '#fde047');
+
+    // Wordmark
+    const top = sq ? 60 : 120;
+    c.save(); c.translate(W / 2, top + 50); c.rotate(-0.03);
+    popBox(c, -250, -50, 500, 100, '#0a0a0a', 24, 8);
+    textC(c, 'QUITSMART', 0, 26, 64, '#fde047', 460);
+    c.restore();
+
+    const st = shareStats();
+    let y = top + (sq ? 150 : 230);
+    // Avatar + optional name
+    if (SHARE.showAvatar && !sq) {
+        const av = await svgToImage(avatarSVG(avatarOf(), { size: 240 }));
+        if (av) { c.drawImage(av, W / 2 - 120, y, 240, 240); y += 260; }
+    }
+    if (SHARE.showName && S.name) { textC(c, String(S.name).toUpperCase(), W / 2, y + (sq ? 44 : 50), sq ? 46 : 56, '#0a0a0a', 900); y += sq ? 64 : 80; }
+
+    if (badge || quest) {
+        const title = quest ? 'THE ASH RING IS BROKEN' : badge.title.toUpperCase();
+        const img = quest ? null : await svgToImage(getPopBadgeSVG(badge));
+        const bh = sq ? 420 : 620;
+        if (img) { c.drawImage(img, W / 2 - bh * 0.42, y, bh * 0.84, bh); y += bh + 20; }
+        else { textC(c, '💍', W / 2, y + 300, 300, '#0a0a0a'); y += 380; }
+        popBox(c, 90, y, W - 180, sq ? 150 : 200, '#ffffff', 32);
+        textC(c, quest ? 'QUEST COMPLETE' : 'NEW ' + (badge.level || '').toUpperCase() + ' ACHIEVEMENT', W / 2, y + (sq ? 55 : 70), 34, '#be123c', W - 260);
+        textC(c, title, W / 2, y + (sq ? 120 : 150), 64, '#0a0a0a', W - 260);
+        y += (sq ? 150 : 200) + 50;
+        const line = quest ? 'I escaped the Smoke Dungeon and broke the "just one" voice for good.' : (badge.desc || '');
+        c.font = '700 40px "Exo 2", system-ui, sans-serif'; c.fillStyle = '#0a0a0a'; c.textAlign = 'center';
+        wrapLines(c, line, W - 240).slice(0, 3).forEach((l, i) => c.fillText(l, W / 2, y + i * 54));
+        y += 3 * 54;
+    } else {
+        // Headline speech bubble
+        const bub = sq ? 110 : 130;
+        popBox(c, 140, y, W - 280, bub, '#ffffff', 56, 10);
+        textC(c, st.head, W / 2, y + bub * 0.71, sq ? 72 : 84, '#0a0a0a', W - 360);
+        y += bub + (sq ? 30 : 70);
+        // Big number
+        const bigH = sq ? 270 : 470;
+        popBox(c, 110, y, W - 220, bigH, '#0a0a0a', 44);
+        textC(c, st.bigN, W / 2, y + bigH * 0.66, sq ? 190 : 320, '#fde047', W - 300);
+        textC(c, st.bigL, W / 2, y + bigH - (sq ? 30 : 46), 52, '#ffffff', W - 300);
+        y += bigH + (sq ? 30 : 60);
+        // Stat tiles
+        const tw = (W - 220 - 2 * 30) / 3, th = sq ? 140 : 200;
+        st.tiles.forEach(([k, v, col], i) => {
+            const x = 110 + i * (tw + 30);
+            popBox(c, x, y, tw, th, col, 28, 10);
+            textC(c, k, x + tw / 2, y + (sq ? 50 : 62), 26, '#0a0a0a', tw - 30);
+            textC(c, v, x + tw / 2, y + th - (sq ? 36 : 48), 56, '#0a0a0a', tw - 30);
+        });
+        y += th;
+    }
+
+    // Footer: invite
+    const fy = H - (sq ? 110 : 210);
+    popBox(c, 90, fy, W - 180, sq ? 80 : 120, '#0a0a0a', 28, 0);
+    const code = (typeof signedIn === 'function' && signedIn() && A.refCode) ? '  •  code ' + A.refCode : '';
+    textC(c, 'GET FREE WITH ME → ' + SITE.toUpperCase() + code, W / 2, fy + (sq ? 54 : 76), 40, '#fde047', W - 240);
+    if (!sq) textC(c, 'Free • no willpower needed • not medical advice', W / 2, H - 50, 28, 'rgba(10,10,10,.7)', W - 200, 700);
+    return new Promise(res => cv.toBlob(b => res(b), 'image/png'));
+}
+async function refreshSharePreview() {
+    const img = $('share-preview'); if (!img) return;
+    img.style.opacity = '.4';
+    try {
+        SHARE.blob = await drawShare();
+        if (SHARE.url) URL.revokeObjectURL(SHARE.url);
+        SHARE.url = URL.createObjectURL(SHARE.blob); img.src = SHARE.url;
+    } catch (e) { toast('Could not make the image on this device.'); }
+    img.style.opacity = '1';
+}
+function shareOpt(id, on, label, fn) {
+    return `<button type="button" onclick="${fn}" class="chip ${on ? 'chip-on' : 'chip-off'}">${on ? '✓ ' : ''}${label}</button>`;
+}
+function renderShareSheet() {
+    const s = SHARE;
+    openSheet(`<div class="space-y-3">
+        <div class="row"><span class="tag bg-fuchsia-300 text-neutral-950">📤 Share</span><span class="text-[11px] font-black uppercase text-neutral-500">Made on your phone</span></div>
+        <div class="flex justify-center"><img id="share-preview" alt="Share image preview" class="${s.format === 'story' ? 'h-[22rem]' : 'h-[16rem]'} rounded-xl border-2 border-neutral-950 shadow-[4px_4px_0px_#0a0a0a] bg-neutral-100 transition-opacity"></div>
+        <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-neutral-100 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700">
+            <button type="button" onclick="shareSet('format','story')" class="seg ${s.format === 'story' ? 'seg-on' : 'seg-off'}">Story</button>
+            <button type="button" onclick="shareSet('format','square')" class="seg ${s.format === 'square' ? 'seg-on' : 'seg-off'}">Square post</button>
+        </div>
+        <div class="flex flex-wrap gap-1.5">${shareOpt('n', s.showName, 'Show my name', "shareSet('showName')")}${s.format === 'story' ? shareOpt('a', s.showAvatar, 'Show my avatar', "shareSet('showAvatar')") : ''}</div>
+        <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="shareImageNow()" class="py-3 btn text-sm bg-emerald-400 text-neutral-950 pop-btn">📤 Share</button>
+            <button type="button" onclick="downloadShareImage()" class="py-3 btn text-sm bg-white dark:bg-neutral-800 pop-btn">⬇ Save image</button>
+        </div>
+    </div>`);
+    refreshSharePreview();
+}
+window.shareSet = function (k, v) { SHARE[k] = v === undefined ? !SHARE[k] : v; renderShareSheet(); };
+window.openShareCard = function (kind, badgeId) {
+    SHARE.kind = kind || 'progress'; SHARE.badgeId = badgeId || null;
+    if (!$('badge-modal').classList.contains('hidden')) closeBadgeModal();
+    renderShareSheet();
+};
+function shareCaption() {
+    const link = 'https://' + SITE + ((typeof signedIn === 'function' && signedIn() && A.refCode) ? '/?ref=' + A.refCode : '');
+    const sn = snap();
+    if (SHARE.kind === 'badge') { const b = computeBadges().find(x => x.id === SHARE.badgeId); return 'I just earned "' + (b ? b.title : 'an achievement') + '" on QuitSmart. ' + link; }
+    if (SHARE.kind === 'quest') return 'I broke the Ash Ring on QuitSmart 💍💧 ' + link;
+    return S.phase === 'free' ? sn.days + ' days smoke-free and ' + money(sn.saved) + ' kept. No willpower needed. ' + link : 'Day ' + planDay() + ' of my 6-day plan to get free from smoking. ' + link;
+}
+window.shareImageNow = async function () {
+    if (!SHARE.blob) await refreshSharePreview();
+    const file = new File([SHARE.blob], 'quitsmart.png', { type: 'image/png' });
+    try {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: shareCaption() }); return; }
+    } catch (e) { if (e && e.name === 'AbortError') return; }
+    downloadShareImage(); copyText(shareCaption()); toast('Image saved and caption copied. Post it anywhere.');
+};
+window.downloadShareImage = async function () {
+    if (!SHARE.blob) await refreshSharePreview();
+    const a = document.createElement('a'); a.href = SHARE.url; a.download = 'quitsmart-' + (SHARE.kind) + '.png';
+    document.body.appendChild(a); a.click(); a.remove();
+};
+/* ============================================================
+   OPTIONAL ANONYMOUS RESEARCH (off by default)
+   Sends a small, banded snapshot at most once a week, with a random
+   participant id that is never linked to an account (no sign-in token).
+   Table + rules: supabase/research.sql
+   ============================================================ */
+const RESEARCH_VERSION = '2026.11';
+const AGE_BANDS = ['18-24', '25-34', '35-44', '45-54', '55-64', '65+'];
+const GENDERS = [['woman', 'Woman'], ['man', 'Man'], ['non_binary', 'Non-binary'], ['prefer_not', 'Prefer not to say']];
+function rs() { if (!S.research) S.research = { on: false }; return S.research; }
+function uuid4() {
+    if (crypto && crypto.randomUUID) return crypto.randomUUID();
+    const b = crypto.getRandomValues(new Uint8Array(16)); b[6] = (b[6] & 15) | 64; b[8] = (b[8] & 63) | 128;
+    const h = [...b].map(x => x.toString(16).padStart(2, '0')).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+}
+function band(n, edges, labels) { for (let i = 0; i < edges.length; i++) if (n <= edges[i]) return labels[i]; return labels[labels.length - 1]; }
+function researchSnapshot() {
+    const r = rs(), sn = snap(), free = S.phase === 'free';
+    const tc = {}; S.cravings.forEach(c => { tc[c.trigger] = (tc[c.trigger] || 0) + 1; });
+    const tools = {}; S.cravings.forEach(c => { if (c.tool) tools[c.tool] = (tools[c.tool] || 0) + 1; });
+    const topTool = Object.entries(tools).sort((a, b) => b[1] - a[1])[0];
+    return {
+        participant: r.pid, age_band: r.age, gender: r.gender, phase: free ? 'free' : 'prep',
+        days_free_band: free ? band(sn.days, [0, 2, 6, 13, 29, 89, 179, 364], ['0', '1-2', '3-6', '7-13', '14-29', '30-89', '90-179', '180-364', '365+']) : null,
+        cigs_band: band(+S.cigsPerDay || 0, [5, 10, 20], ['1-5', '6-10', '11-20', '21+']),
+        plan_days: Math.min(6, S.completedDays.length), stay_days: Math.min(6, ((S.stay && S.stay.completed) || []).length),
+        cravings: S.cravings.length, cravings_passed: S.cravings.filter(c => c.outcome === 'passed').length, slips: S.slips.length,
+        top_triggers: Object.entries(tc).sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => String(x[0]).slice(0, 30)),
+        top_tool: topTool ? String(topTool[0]).slice(0, 30) : null, app_version: RESEARCH_VERSION
+    };
+}
+async function researchMaybeSend(force) {
+    const r = rs();
+    if (!r.on || !r.pid || !r.age || !r.gender) return;
+    if (!force && r.lastSent && Date.now() - r.lastSent < 7 * DAY) return;
+    try {
+        // No Authorization header on purpose: the row must not be linkable to an account.
+        await rawFetch('/rest/v1/research_snapshots', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: researchSnapshot() });
+        r.lastSent = Date.now(); Store.save(S);
+    } catch (e) { /* offline or table not set up yet: try again next time */ }
+}
+function researchPreview() {
+    const x = researchSnapshot();
+    return `<ul class="text-xs text-neutral-700 dark:text-neutral-300 space-y-0.5 list-disc pl-4">
+        <li>Age group and gender you pick below</li>
+        <li>Stage: ${x.phase === 'free' ? 'quit, ' + esc(x.days_free_band) + ' days' : 'preparing'} • smoked ${esc(x.cigs_band)}/day</li>
+        <li>Plan days done: ${x.plan_days}/6 • cravings logged: ${x.cravings}, passed: ${x.cravings_passed} • slips: ${x.slips}</li>
+        <li>Top triggers and most-used tool (e.g. "Coffee / Tea", "4-7-8 Breath")</li>
+    </ul>`;
+}
+window.openResearch = function () {
+    if (!$('settings-modal').classList.contains('hidden')) closeSettings();
+    const r = rs();
+    const ageSel = r.age || '', g = r.gender || '';
+    openSheet(`<div class="space-y-3">
+        <span class="tag bg-sky-300 text-neutral-950">🔬 Help research</span>
+        <h3 class="text-xl font-black uppercase text-neutral-950 dark:text-white">${r.on ? 'You\'re helping research' : 'Help us learn what works'}</h3>
+        <p class="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">Optional and anonymous. Once a week the app shares a tiny summary so we can see which tools help which people (for example "people aged 25–34 found breathing most useful").</p>
+        <div class="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700 space-y-2">
+            <p class="text-[11px] font-black uppercase">What's shared</p>${researchPreview()}
+            <p class="text-[11px] font-black uppercase pt-1">Never shared</p>
+            <p class="text-xs text-neutral-700 dark:text-neutral-300">Your name, email, journal or notes, photo, exact dates or location. It isn't linked to your account, even if you're signed in. Results are only ever reported for groups of 5 or more people.</p>
+        </div>
+        <div><label for="rs-age" class="lbl">Age group</label>
+            <select id="rs-age" class="inp pop-input"><option value="">Choose…</option>${AGE_BANDS.map(a => `<option value="${a}" ${a === ageSel ? 'selected' : ''}>${a}</option>`).join('')}</select></div>
+        <div><span class="lbl">Gender</span>
+            <div class="grid grid-cols-2 gap-1.5">${GENDERS.map(([v, l]) => `<label class="chip ${g === v ? 'chip-on' : 'chip-off'} justify-center cursor-pointer"><input type="radio" name="rs-gender" value="${v}" ${g === v ? 'checked' : ''} class="sr-only" onchange="document.querySelectorAll('[name=rs-gender]').forEach(i=>i.parentElement.className='chip '+(i.checked?'chip-on':'chip-off')+' justify-center cursor-pointer')">${l}</label>`).join('')}</div></div>
+        ${r.on ? '' : `<label class="flex items-start gap-2.5 cursor-pointer"><input type="checkbox" id="rs-consent" class="mt-0.5 w-5 h-5 shrink-0 accent-emerald-500"><span class="text-xs text-neutral-700 dark:text-neutral-300">I'm 18+ and I agree to share this anonymous summary. I can stop and delete it anytime.</span></label>`}
+        <p id="rs-err" class="hidden text-xs font-bold text-rose-600"></p>
+        ${r.on
+            ? `<div class="grid grid-cols-2 gap-2"><button type="button" onclick="researchSave()" class="py-2.5 btn text-xs bg-emerald-400 text-neutral-950 pop-btn">Save changes</button><button type="button" onclick="researchStop()" class="py-2.5 btn text-xs bg-rose-300 text-neutral-950 pop-btn">Stop &amp; delete</button></div>`
+            : `<button type="button" onclick="researchSave()" class="w-full py-3 btn text-sm bg-emerald-400 text-neutral-950 pop-btn">Start sharing anonymously</button>`}
+        <button type="button" onclick="closeSheet(); openLegal('privacy')" class="w-full text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 underline cursor-pointer">Read the Privacy Policy</button>
+    </div>`);
+};
+window.researchSave = function () {
+    const r = rs(), age = $('rs-age').value, gi = document.querySelector('[name=rs-gender]:checked'), err = $('rs-err');
+    const fail = m => { err.textContent = m; err.classList.remove('hidden'); };
+    if (!age) return fail('Please choose an age group.');
+    if (!gi) return fail('Please choose an option for gender (you can pick "Prefer not to say").');
+    if (!r.on && !$('rs-consent').checked) return fail('Please tick the box to agree.');
+    const was = r.on;
+    Object.assign(r, { on: true, age, gender: gi.value, pid: r.pid || uuid4(), consentAt: r.consentAt || Date.now() });
+    save(); closeSheet(); renderResearchUI();
+    researchMaybeSend(!was);
+    toast(was ? 'Saved.' : 'Thank you! You\'re helping people quit.');
+};
+window.researchStop = async function () {
+    const r = rs(), pid = r.pid;
+    Object.assign(r, { on: false, pid: null, lastSent: 0 }); save(); closeSheet(); renderResearchUI();
+    if (pid) {
+        try { await rawFetch('/rest/v1/rpc/delete_my_research', { method: 'POST', body: { p: pid } }); toast('Stopped. Your research data was deleted.'); }
+        catch (e) { r.pendingDelete = pid; save(); toast('Stopped. We\'ll delete your research data when you\'re back online.'); }
+    } else toast('Stopped.');
+};
+async function researchRetryDelete() {
+    const r = rs(); if (!r.pendingDelete) return;
+    try { await rawFetch('/rest/v1/rpc/delete_my_research', { method: 'POST', body: { p: r.pendingDelete } }); delete r.pendingDelete; save(); } catch (e) {}
+}
+function renderResearchUI() {
+    const box = $('settings-research'); if (!box || !S) return;
+    const r = rs();
+    box.innerHTML = r.on
+        ? `<div class="row p-3 rounded-xl bg-emerald-50 dark:bg-neutral-950 border-2 border-neutral-950 dark:border-neutral-700"><span class="text-xs font-black">✅ Sharing anonymously • ${esc(r.age)}</span><button type="button" onclick="openResearch()" class="text-[11px] font-black uppercase text-sky-700 dark:text-sky-400 underline cursor-pointer">Manage</button></div>`
+        : `<p class="text-xs text-neutral-600 dark:text-neutral-400">Optional. Share an anonymous weekly summary (age group, gender, which tools helped) to help us improve QuitSmart for everyone.</p>
+           <button type="button" onclick="openResearch()" class="w-full py-2.5 btn text-xs bg-white dark:bg-neutral-800 pop-btn">🔬 Help research (optional)</button>`;
+}
 
 /* =====================================================================
    BOOT
@@ -6443,9 +6778,41 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden && S)
 function initApp() {
     checkIncomingSharedBadge();
     const saved = Store.load();
-    if (saved) { S = saved; enterApp(); setTimeout(maybeAskLegal, 600); cloudOnOpen(); } else showOnboarding();
+    if (saved) { S = saved; enterApp(); setTimeout(maybeAskLegal, 600); } else showOnboarding();
+    cloudHandleRedirect().then(handled => { if (!handled && saved) cloudOnOpen(); });
+    if (saved) setTimeout(() => { researchRetryDelete(); researchMaybeSend(); }, 2500);
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp); else initApp();
+/* ---------- Installable app (PWA) ---------- */
+let installPrompt = null;
+const isStandalone = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installPrompt = e; renderInstallUI(); });
+window.addEventListener('appinstalled', () => { installPrompt = null; renderInstallUI(); toast('QuitSmart is on your home screen.'); });
+function renderInstallUI() {
+    const box = $('settings-install'); if (!box) return;
+    if (isStandalone()) { box.innerHTML = ''; return; }
+    if (!installPrompt && !isIOS()) { box.innerHTML = ''; return; }
+    box.innerHTML = `<span class="lbl">App</span>
+        <button type="button" onclick="installApp()" class="w-full py-2.5 btn text-xs bg-emerald-300 text-neutral-950 pop-btn">📲 Add QuitSmart to your home screen</button>
+        <p class="text-[11px] text-neutral-500">Opens like an app, full screen, and works offline.</p>`;
+}
+window.installApp = async function () {
+    if (installPrompt) { installPrompt.prompt(); try { await installPrompt.userChoice; } catch (e) {} installPrompt = null; renderInstallUI(); return; }
+    closeSettings();
+    openSheet(`<div class="space-y-3"><span class="tag bg-emerald-300 text-neutral-950">📲 Add to home screen</span>
+        <h3 class="text-xl font-black uppercase text-neutral-950 dark:text-white">On iPhone / iPad</h3>
+        <ol class="list-decimal pl-5 text-sm text-neutral-700 dark:text-neutral-300 space-y-1.5">
+            <li>Open quitsmart.in in <strong>Safari</strong>.</li>
+            <li>Tap the <strong>Share</strong> button (square with an arrow).</li>
+            <li>Scroll and tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li>
+        </ol>
+        <button type="button" onclick="closeSheet()" class="w-full py-2.5 btn text-xs bg-white dark:bg-neutral-800 pop-btn">Got it</button></div>`);
+};
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
+}
+
 })();
 </script>
 </body>
