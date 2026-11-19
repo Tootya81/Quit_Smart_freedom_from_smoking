@@ -4415,19 +4415,24 @@ function renderBattle() {
     $('battle-body').innerHTML = body;
 }
 /* ============================================================
-   FREEDOM QUEST WORLD MAP (illustrated SVG, pop-art style)
+   FREEDOM QUEST WORLD MAP — Indian miniature-painting style
+   Lapis sky with gold clouds, flowered fields, pastel rock towers,
+   woven water, leaf-by-leaf trees, palace-fort; fine sepia line work.
    Bottom → top: Smoke Dungeon → Craving Tunnels → Stress Peaks → Cleansing Falls
    ============================================================ */
 const QMAP_W = 400, QMAP_H = 780;
 const QMAP_POS = {
-    s1: [92, 690], s2: [214, 718], s3: [320, 646],
+    s1: [92, 690], s2: [196, 722], s3: [312, 650],
     c1: [292, 548], c2: [166, 532], c3: [76, 464],
     p1: [136, 382], p2: [262, 344], p3: [326, 262],
-    f1: [226, 196], f2: [104, 150], f3: [212, 66]
+    f1: [226, 196], f2: [104, 150], f3: [212, 86]
 };
-const QMAP_BANDS = [[592, 780], [430, 592], [218, 430], [0, 218]]; // y-ranges per act (index = region)
+const QMAP_BANDS = [[598, 780], [434, 598], [212, 434], [0, 212]];
+const QS = '#3b2614';          // sepia line
+const QG = '#d4a437';          // gold
 let questSel = null;
 
+function qmRng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function qmSmoothPath(pts) {
     let d = 'M' + pts[0][0] + ',' + pts[0][1];
     for (let i = 0; i < pts.length - 1; i++) {
@@ -4437,140 +4442,189 @@ function qmSmoothPath(pts) {
     }
     return d;
 }
-function qmWrap(text, max) {
-    const words = String(text).split(' '), out = []; let line = '';
-    words.forEach(w => { if ((line + ' ' + w).trim().length > max && line) { out.push(line); line = w; } else line = (line + ' ' + w).trim(); });
-    if (line) out.push(line); return out;
+function qmBlob(R, cx, cy, rx, ry, bumps, jag) {
+    const pts = [];
+    for (let i = 0; i < bumps; i++) { const a = Math.PI * 2 * i / bumps, j = 1 + (R() - .5) * jag; pts.push([cx + Math.cos(a) * rx * j, cy + Math.sin(a) * ry * j]); }
+    let d = '';
+    pts.forEach((p, i) => { const n = pts[(i + 1) % pts.length], m = [(p[0] + n[0]) / 2, (p[1] + n[1]) / 2]; d += (i ? ' Q' : 'M' + ((pts[pts.length - 1][0] + p[0]) / 2).toFixed(1) + ',' + ((pts[pts.length - 1][1] + p[1]) / 2).toFixed(1) + ' Q') + p[0].toFixed(1) + ',' + p[1].toFixed(1) + ' ' + m[0].toFixed(1) + ',' + m[1].toFixed(1); });
+    return d + 'Z';
 }
-function qmRng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+/* miniature rock tower: stacked shelves, lit face, fine hatching, tufts of plants */
+function qmRock(R, cx, baseY, w, h, light, mid, dark) {
+    let s = '', y = baseY, rw = w;
+    const layers = 4 + Math.floor(R() * 2);
+    for (let i = 0; i < layers; i++) {
+        const lh = h / layers * (1.12 - i * .08), cy = y - lh * .42, x = cx + (R() - .5) * w * .34;
+        const outer = qmBlob(R, x, cy, rw / 2 * (0.8 + R() * .35), lh * (.48 + R() * .2), 11, .5);
+        s += `<path d="${outer}" fill="${dark}" stroke="${QS}" stroke-width="1"/>`;
+        s += `<path d="${qmBlob(R, x - rw * .06, cy - lh * .05, rw * .42, lh * .36, 12, .28)}" fill="${mid}"/>`;
+        s += `<path d="${qmBlob(R, x - rw * .16, cy - lh * .12, rw * .24, lh * .2, 10, .3)}" fill="${light}"/>`;
+        for (let k = 0; k < 4; k++) { const hx = x + rw * (.12 + k * .08); s += `<path d="M${hx.toFixed(1)},${(cy - lh * .12).toFixed(1)} l2,${(lh * .32).toFixed(1)}" stroke="${QS}" stroke-width=".6" opacity=".6"/>`; }
+        if (R() > .55) { const tx = x - rw * .2 + R() * rw * .3, ty = cy - lh * .4; s += `<path d="M${tx.toFixed(1)},${ty.toFixed(1)} l-2,-5 M${tx.toFixed(1)},${ty.toFixed(1)} l0,-6 M${tx.toFixed(1)},${ty.toFixed(1)} l2,-5" stroke="#2f6b2a" stroke-width="1" stroke-linecap="round"/>`; }
+        y -= lh * (.5 + R() * .2); rw *= .7 + R() * .2;
+    }
+    return s;
+}
+/* trees drawn leaf by leaf */
+function qmTree(R, x, y, r, kind) {
+    if (kind === 'cypress') {
+        let s = `<path d="M${x},${y - r * 2.8} C${x + r * .85},${y - r * 1.5} ${x + r * .8},${y - r * .2} ${x},${y} C${x - r * .8},${y - r * .2} ${x - r * .85},${y - r * 1.5} ${x},${y - r * 2.8}Z" fill="#1f4d2b" stroke="${QS}" stroke-width=".8"/>`;
+        for (let k = 0; k < 8; k++) { const ly = y - r * (.3 + k * .3), lw = r * .55 * (1 - k * .09); s += `<path d="M${(x - lw).toFixed(1)},${ly.toFixed(1)} q${lw.toFixed(1)},-3 ${(lw * 2).toFixed(1)},0" fill="none" stroke="#5f9a4c" stroke-width=".8"/>`; }
+        return s;
+    }
+    const flowering = kind === 'flower';
+    let s = `<path d="M${x},${y + r * .7} C${x - 1},${y + r * 1.2} ${x + 1},${y + r * 1.5} ${x},${y + r * 1.9}" stroke="#5a3a1e" stroke-width="2" fill="none"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${flowering ? '#2e6b35' : '#285e2f'}" stroke="${QS}" stroke-width=".8"/>`;
+    const n = Math.round(r * 3.2);
+    for (let k = 0; k < n; k++) {
+        const a = R() * 6.28, d = Math.sqrt(R()) * r * .82, lx = x + Math.cos(a) * d, ly = y + Math.sin(a) * d, rot = (R() * 180).toFixed(0);
+        s += `<ellipse cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" rx="1.9" ry=".9" transform="rotate(${rot} ${lx.toFixed(1)} ${ly.toFixed(1)})" fill="${R() > .45 ? '#6faa52' : '#a7cf7a'}"/>`;
+        if (flowering && R() > .7) s += `<circle cx="${(lx + 1).toFixed(1)}" cy="${(ly - 1).toFixed(1)}" r="1" fill="#e74c3c"/>`;
+    }
+    return s;
+}
+/* gold-lined curling cloud (tchi cloud) */
+function qmCloud(x, y, sc, fill, line) {
+    return `<g transform="translate(${x},${y}) scale(${sc})"><path d="M-30,6 C-34,-4 -22,-12 -12,-6 C-10,-16 6,-18 12,-8 C20,-16 34,-10 30,0 C40,2 38,12 28,12 L-24,12 C-34,12 -36,8 -30,6Z" fill="${fill}" stroke="${line}" stroke-width="1"/>
+        <path d="M-12,-6 c4,2 4,8 -1,9 M12,-8 c3,3 2,8 -3,9 M30,0 c-2,3 -6,4 -9,2" fill="none" stroke="${line}" stroke-width=".9" stroke-linecap="round"/></g>`;
+}
+function qmBird(x, y, s) { return `<path d="M${x - 5 * s},${y} q${2.5 * s},${-3 * s} ${5 * s},0 q${2.5 * s},${-3 * s} ${5 * s},0" fill="none" stroke="${QS}" stroke-width="1" stroke-linecap="round"/>`; }
 let qmSceneryCache = null;
 function qmScenery() {
     if (qmSceneryCache) return qmSceneryCache;
-    const R = qmRng(7), W = QMAP_W, H = QMAP_H;
+    const R = qmRng(31), W = QMAP_W, H = QMAP_H;
     let s = '';
-    // base land: meadow (top) → granite highlands → ochre badlands → ashen waste (bottom), soft transitions
-    s += `<rect width="${W}" height="${H}" fill="url(#qm-land)"/>`;
-    s += `<rect width="${W}" height="${H}" fill="#000" filter="url(#qm-patches)" opacity=".22"/>`;
-    // lake + river (falls at the cliff edge, then winding down to the dungeon marsh)
-    const river = 'M318,40 C300,70 296,96 288,118 C282,136 286,160 280,186 C270,224 236,232 214,260 C192,288 216,312 196,340 C176,368 120,372 104,404 C88,436 120,470 136,500 C150,528 120,560 96,592 C78,616 70,640 58,668';
-    s += `<path d="M262,18 C300,6 352,10 370,32 C384,52 360,74 330,76 C300,78 270,70 258,52 C250,38 252,24 262,18Z" fill="#4f86a8"/>`;
-    s += `<path d="M268,24 C300,14 346,18 362,34 C372,48 352,66 328,68 C302,70 278,62 268,50 C262,40 262,30 268,24Z" fill="#6ea3c2" opacity=".85"/>`;
-    s += `<path d="${river}" fill="none" stroke="#3f6f8c" stroke-width="9" stroke-linecap="round" opacity=".55"/>`;
-    s += `<path d="${river}" fill="none" stroke="#7fb3cf" stroke-width="5" stroke-linecap="round"/>`;
-    // waterfall over the cliff
-    s += `<path d="M262,170 C290,160 320,166 340,178 L340,190 C318,180 290,176 262,184Z" fill="#6b6259" opacity=".75"/>`;
-    s += `<g stroke="#f1f5f9" stroke-linecap="round" opacity=".9"><path d="M276,168 V196" stroke-width="2.5"/><path d="M282,166 V200" stroke-width="2"/><path d="M288,170 V194" stroke-width="2.5"/></g>`;
-    s += `<ellipse cx="282" cy="200" rx="18" ry="6" fill="#e2e8f0" opacity=".7"/>`;
-    // forest: clusters of tree crowns in the meadow
-    const tree = (x, y, r) => `<circle cx="${(x + r * .35).toFixed(1)}" cy="${(y + r * .45).toFixed(1)}" r="${r}" fill="#1f3a24" opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r}" fill="url(#qm-tree)"/>`;
-    [[60, 70, 26, 22], [150, 110, 20, 14], [40, 180, 18, 12], [360, 120, 16, 10], [200, 20, 22, 12]].forEach(([cx, cy, spread, n]) => {
-        for (let i = 0; i < n; i++) { const a = R() * 6.28, d = Math.sqrt(R()) * spread; s += tree(cx + Math.cos(a) * d * 1.4, cy + Math.sin(a) * d, 4 + R() * 3.5); }
+    const wavy = (y, amp, step) => { let d = ''; for (let x = -10; x <= 410; x += step) d += ' L' + x + ',' + (y + (R() - .5) * 2 * amp).toFixed(1); return d; };
+    // grounds: dusk-violet waste, ochre hills, khaki highlands, sap-green fields
+    s += `<rect width="${W}" height="${H}" fill="#5b4e63"/>`;
+    s += `<path d="M-10,604${wavy(604, 6, 30)} L410,420 L-10,420Z" fill="#c99a52" stroke="${QS}" stroke-width="1" filter="url(#qm-rough)"/>`;
+    s += `<path d="M-10,440${wavy(440, 6, 28)} L410,200 L-10,200Z" fill="#d6c48f" stroke="${QS}" stroke-width="1" filter="url(#qm-rough)"/>`;
+    s += `<path d="M-10,216${wavy(216, 6, 24)} L410,44 L-10,44Z" fill="#5f8f45" stroke="${QS}" stroke-width="1" filter="url(#qm-rough)"/>`;
+    // lapis sky band with golden horizon, gold sun and clouds, birds
+    s += `<path d="M-10,-10 H410 V48 C330,56 260,42 200,52 S70,44 -10,52Z" fill="#203a78"/>`;
+    s += `<path d="M-10,52 C70,44 140,54 200,52 S330,56 410,48" fill="none" stroke="#e8b84a" stroke-width="5" opacity=".9"/>`;
+    s += `<g transform="translate(352,26)"><circle r="13" fill="${QG}" stroke="#8a6414" stroke-width="1"/>${Array.from({ length: 16 }, (_, i) => { const a = i * Math.PI / 8; return `<path d="M${(Math.cos(a) * 15).toFixed(1)},${(Math.sin(a) * 15).toFixed(1)} L${(Math.cos(a) * (i % 2 ? 19 : 22)).toFixed(1)},${(Math.sin(a) * (i % 2 ? 19 : 22)).toFixed(1)}" stroke="${QG}" stroke-width="1.6" stroke-linecap="round"/>`; }).join('')}</g>`;
+    s += qmCloud(70, 24, .9, 'none', QG) + qmCloud(200, 18, .8, 'none', QG) + qmCloud(286, 32, .6, 'none', QG);
+    s += qmBird(140, 30, 1) + qmBird(154, 24, .8) + qmBird(166, 33, .7);
+    // flowers and grass across the fields
+    for (let i = 0; i < 70; i++) {
+        const x = 20 + R() * 360, y = 62 + R() * 144, c = ['#f5f0e1', '#e74c3c', '#f4c542', '#f5f0e1'][Math.floor(R() * 4)];
+        s += R() > .5 ? `<g fill="${c}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.2"/><circle cx="${(x + 2.4).toFixed(1)}" cy="${(y + .6).toFixed(1)}" r="1"/><circle cx="${(x + 1).toFixed(1)}" cy="${(y - 2).toFixed(1)}" r="1"/></g>`
+                      : `<path d="M${x.toFixed(1)},${y.toFixed(1)} l-1.5,-4 M${x.toFixed(1)},${y.toFixed(1)} l0,-5 M${x.toFixed(1)},${y.toFixed(1)} l1.5,-4" stroke="#2f6b2a" stroke-width=".9" stroke-linecap="round"/>`;
+    }
+    // lotus lake with woven water
+    const lake = qmBlob(R, 316, 88, 60, 24, 12, .12);
+    s += `<path d="${lake}" fill="#4a6fa5" stroke="${QS}" stroke-width="1"/><path d="${lake}" fill="url(#qm-water)"/>`;
+    [[294, 84], [334, 94], [318, 76], [350, 84]].forEach(([x, y]) => s += `<g transform="translate(${x},${y})"><ellipse cx="0" cy="3" rx="6" ry="2" fill="#4c8a3a" stroke="${QS}" stroke-width=".6"/><path d="M0,1 C-3,-2 -2,-6 0,-7 C2,-6 3,-2 0,1Z M0,1 C-5,0 -7,-3 -6,-4 C-3,-3 -1,-2 0,1Z M0,1 C5,0 7,-3 6,-4 C3,-3 1,-2 0,1Z" fill="#f2a7c3" stroke="${QS}" stroke-width=".6"/></g>`);
+    s += qmRock(R, 300, 214, 96, 74, '#f7e3ea', '#e2b6c6', '#b98aa6');
+    s += `<path d="M285,112 C285,132 289,152 287,170 L299,170 C301,152 297,132 295,112Z" fill="#9fc2e4" stroke="${QS}" stroke-width=".8"/><path d="M288,118 V166 M292,114 V168" stroke="#f5f0e1" stroke-width="1" stroke-dasharray="5 3"/>`;
+    // river with woven water
+    const river = 'M292,172 C288,188 278,204 262,220 C236,244 212,258 206,284 C198,312 214,326 196,346 C174,370 122,374 104,404 C88,436 120,470 136,500 C150,528 120,560 96,592 C78,616 66,644 54,672 C46,694 40,716 36,746';
+    s += `<path d="${river}" fill="none" stroke="${QS}" stroke-width="9" stroke-linecap="round"/>`;
+    s += `<path d="${river}" fill="none" stroke="#4a6fa5" stroke-width="7.4" stroke-linecap="round"/>`;
+    s += `<path d="${river}" fill="none" stroke="#c9dcef" stroke-width="1" stroke-dasharray="4 3 1 3" stroke-linecap="round"/>`;
+    // trees and a grazing deer
+    const trees = [];
+    [[56, 100, 30, 8, 'round'], [34, 184, 16, 3, 'flower'], [150, 124, 14, 3, 'cypress'], [176, 186, 12, 2, 'flower'], [372, 156, 14, 3, 'cypress'], [252, 116, 10, 2, 'cypress'], [380, 196, 8, 1, 'round']].forEach(([cx, cy, sp, n, k]) => {
+        for (let i = 0; i < n; i++) trees.push([cx + (R() - .5) * sp * 2.4, cy + (R() - .5) * sp, 7 + R() * 4, k]);
     });
-    // granite highlands: shaded ridges (light from upper-left), snow on the highest
-    const peaks = [];
-    for (let i = 0; i < 26; i++) peaks.push([18 + R() * 364, 236 + R() * 168, 18 + R() * 26]);
-    peaks.sort((a, b) => a[1] - b[1]).forEach(([x, y, r]) => {
-        const h = r * 1.15, snow = y < 300 || r > 38;
-        s += `<path d="M${x - r},${y + h * .55} L${x},${y - h * .55} L${x + r},${y + h * .55}Z" fill="#000" opacity=".12" transform="translate(5,5)"/>`;
-        s += `<path d="M${x - r},${y + h * .55} L${x},${y - h * .55} L${x + r * .1},${y + h * .55}Z" fill="#b9b0a4"/>`;
-        s += `<path d="M${x + r * .1},${y + h * .55} L${x},${y - h * .55} L${x + r},${y + h * .55}Z" fill="#857a6e"/>`;
-        if (snow) s += `<path d="M${x - r * .3},${y - h * .2} L${x},${y - h * .55} L${x + r * .32},${y - h * .2} L${x + r * .12},${y - h * .27} L${x},${y - h * .18} L${x - r * .12},${y - h * .28}Z" fill="#f8fafc"/>`;
+    trees.sort((a, b) => a[1] - b[1]).forEach(([x, y, r, k]) => s += qmTree(R, x, y, k === 'cypress' ? r * .7 : r, k));
+    s += `<g transform="translate(160,168)" fill="#c27c3e" stroke="${QS}" stroke-width=".7"><ellipse cx="0" cy="0" rx="9" ry="4.5"/><path d="M7,-2 l5,-7 3,1 -3,4Z"/><path d="M-6,3 v7 M-3,3 v7 M4,3 v7 M7,3 v7" fill="none" stroke-width="1.1"/><path d="M13,-9 l2,-5 M14,-8 l4,-3" fill="none"/></g>`;
+    // Stress Peaks: pastel rock towers
+    [[56, 362, 96, 132], [212, 302, 72, 96], [346, 336, 82, 122], [150, 430, 64, 54], [300, 430, 62, 48], [26, 260, 44, 42]].sort((a, b) => a[1] - b[1]).forEach(([x, y, w, h], i) =>
+        s += i % 2 ? qmRock(R, x, y, w, h, '#eef0f7', '#c4c9e6', '#8f95c4') : qmRock(R, x, y, w, h, '#f6e1e6', '#dcb2c4', '#a77d9b'));
+    [[96, 274], [252, 238], [372, 232]].forEach(([x, y]) => s += qmTree(R, x, y, 5, 'round'));
+    // Craving Tunnels: ochre and terracotta rocks with arched caves
+    [[44, 508, 78, 64], [360, 532, 74, 62], [222, 598, 86, 52], [140, 476, 40, 30]].forEach(([x, y, w, h]) => {
+        s += qmRock(R, x, y, w, h, '#f3d9a4', '#dba45c', '#a8642c');
+        s += `<path d="M${x - 8},${y - 4} V${y - 13} a8,8 0 0 1 16,0 V${y - 4}Z" fill="#2a1a10" stroke="${QS}" stroke-width=".8"/>`;
     });
-    // faint contour lines around the range
-    [0, 1, 2].forEach(k => s += `<path d="M${-10},${410 - k * 10} C80,${380 - k * 14} 160,${420 - k * 8} 240,${392 - k * 12} S380,${404 - k * 10} 420,${380 - k * 8}" fill="none" stroke="#5c4a36" stroke-width=".8" opacity=".25"/>`);
-    // badlands: canyon cracks, cave mouths, scattered rocks
-    s += `<path d="M0,470 C60,486 90,452 150,470 S250,500 300,474 S380,456 400,470" fill="none" stroke="#6b4423" stroke-width="3" opacity=".45"/>`;
-    s += `<path d="M20,560 C80,540 140,580 210,556 S330,530 400,552" fill="none" stroke="#6b4423" stroke-width="2.5" opacity=".4"/>`;
-    [[44, 486, 14, 7], [352, 512, 16, 8], [240, 582, 13, 6], [120, 552, 10, 5]].forEach(([x, y, rx, ry]) => {
-        s += `<ellipse cx="${x}" cy="${y}" rx="${rx + 5}" ry="${ry + 4}" fill="#8a6440" opacity=".6"/><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="url(#qm-cave)"/>`;
-    });
-    for (let i = 0; i < 40; i++) { const x = R() * W, y = 440 + R() * 145, r = 1 + R() * 2.4; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="#5a3d24" opacity=".45"/>`; }
-    // ashen waste + ruined fortress (top-down), smoke drifting east
-    s += `<g transform="translate(286,690)">
-        <rect x="-62" y="-50" width="124" height="96" fill="#000" opacity=".25" transform="translate(5,6)"/>
-        <rect x="-62" y="-50" width="124" height="96" fill="#5f5a55"/><rect x="-50" y="-38" width="100" height="72" fill="#3b3734"/>
-        <rect x="-28" y="-18" width="56" height="34" fill="#4a4541"/>
-        ${[[-62, -50], [62, -50], [-62, 46], [62, 46]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="#6d6762"/><circle cx="${x}" cy="${y}" r="8" fill="#3b3734"/>`).join('')}
-        <path d="M-8,46 h16 v10 h-16z" fill="#2a2725"/>
+    for (let i = 0; i < 16; i++) { const x = 20 + R() * 360, y = 452 + R() * 132; s += qmTree(R, x, y, 3 + R() * 1.5, 'round'); }
+    // Smoke Dungeon: palace-fort with chhatris, arches and curling smoke
+    s += `<g opacity=".95">${[[262, 640, 1], [298, 614, 1.2], [342, 592, 1.1], [236, 664, .8]].map(([x, y, sc]) => qmCloud(x, y, sc, '#8e8798', '#3b3344')).join('')}</g>`;
+    const fx = 300, fy = 744;
+    s += `<g transform="translate(${fx},${fy})" stroke="${QS}" stroke-width="1">
+        <rect x="-82" y="-60" width="164" height="60" fill="#8e8798"/>
+        ${Array.from({ length: 12 }, (_, i) => `<path d="M${-80 + i * 13.5},-60 v-6 q3.5,-5 7,0 v6Z" fill="#a49dad"/>`).join('')}
+        ${Array.from({ length: 6 }, (_, i) => `<path d="M${-70 + i * 22},-12 v-22 q6,-10 12,0 v22Z" fill="#3b3344"/>`).join('').replace(/<path d="M-26[^>]*>|<path d="M-4[^>]*>|<path d="M18[^>]*>/g, '')}
+        ${[-86, 86].map(x => `<rect x="${x - 14}" y="-86" width="28" height="86" fill="#7a7385"/><rect x="${x - 17}" y="-90" width="34" height="5" fill="#a49dad"/>
+            <path d="M${x - 12},-90 v-10 h24 v10" fill="#f0e6d2"/><path d="M${x - 14},-100 Q${x},-122 ${x + 14},-100Z" fill="#f0e6d2"/><path d="M${x},-118 v-7" stroke-width="1.4"/><circle cx="${x}" cy="-127" r="2.2" fill="${QG}"/>
+            <path d="M${x - 5},-60 v-12 q5,-7 10,0 v12Z" fill="#3b3344"/>`).join('')}
+        <path d="M-22,0 V-30 Q0,-58 22,-30 V0Z" fill="#9b2d20"/><path d="M-13,0 V-26 Q0,-44 13,-26 V0Z" fill="#5c1a12"/>
+        <path d="M-22,-30 Q0,-58 22,-30" fill="none" stroke="${QG}" stroke-width="1.5"/>
+        <path d="M-18,-60 h36 v-8 Q0,-88 -18,-68Z" fill="#f0e6d2"/><circle cx="0" cy="-86" r="2.2" fill="${QG}"/>
+        ${[-52, -38, 38, 52].map(x => `<path d="M${x - 3},-24 v-9 q3,-5 6,0 v9Z" fill="#e8a33a"/>`).join('')}
     </g>`;
-    for (let i = 0; i < 30; i++) { const x = R() * W, y = 600 + R() * 175; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1 + R() * 2).toFixed(1)}" fill="#2b2826" opacity=".35"/>`; }
-    s += `<g filter="url(#qm-blur6)" opacity=".55">${[[300, 640, 22], [330, 612, 26], [362, 590, 30], [240, 650, 16], [120, 700, 20]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#d6d3d1"/>`).join('')}</g>`;
-    // paper grain + vignette
-    s += `<rect width="${W}" height="${H}" filter="url(#qm-grain)" opacity=".5"/>`;
-    s += `<rect width="${W}" height="${H}" fill="url(#qm-vignette)"/>`;
-    // compass rose + scale bar
-    s += `<g transform="translate(372,604)" opacity=".9"><circle r="20" fill="#f5efe1" opacity=".8"/><circle r="20" fill="none" stroke="#5c4a36" stroke-width="1"/>
-        <path d="M0,-17 L4,0 L0,17 L-4,0Z" fill="#5c4a36"/><path d="M0,-17 L4,0 L-4,0Z" fill="#b45309"/><path d="M-17,0 L0,3 L17,0 L0,-3Z" fill="#8b7355" opacity=".7"/>
-        <text y="-25" text-anchor="middle" font-size="12" font-family="Georgia, serif" font-weight="700" fill="#fbf7ee" style="paint-order: stroke" stroke="#1c1917" stroke-width="3">N</text></g>`;
-    s += `<g transform="translate(290,758)" font-family="Georgia, serif" font-size="10" fill="#f5f5f4"><rect width="60" height="4" fill="#e7e5e4"/><rect width="30" height="4" fill="#57534e"/><text y="-3">0</text><text x="52" y="-3">1 league</text></g>`;
+    for (let i = 0; i < 20; i++) { const x = 20 + R() * 360, y = 616 + R() * 150; if (x > 200 && y > 660) continue; s += `<path d="M${x.toFixed(1)},${y.toFixed(1)} l-1.5,-4 M${x.toFixed(1)},${y.toFixed(1)} l1.5,-4" stroke="#2f2836" stroke-width=".9"/>`; }
+    // compass: gold eight-pointed star
+    s += `<g transform="translate(366,612)"><path d="M0,-16 L3.5,-3.5 L16,0 L3.5,3.5 L0,16 L-3.5,3.5 L-16,0 L-3.5,-3.5Z" fill="${QG}" stroke="${QS}" stroke-width="1"/><path d="M0,-16 L3.5,-3.5 L-3.5,-3.5Z" fill="#9b2d20"/><circle r="2.4" fill="${QS}"/>
+        <text y="-21" text-anchor="middle" font-size="12" font-family="Georgia, serif" font-weight="700" fill="#f5ecd7" style="paint-order: stroke" stroke="${QS}" stroke-width="3">N</text></g>`;
     qmSceneryCache = s;
     return s;
 }
+function qmCartouche(x, y, w, text, sub, state) {
+    const fill = state === 'cleared' ? '#e9d48b' : state === 'locked' ? '#d9d2c2' : '#f2dc8f', h = 24, hw = w / 2;
+    const shape = `M${-hw - 9},0 Q${-hw - 3},${-h / 2} ${-hw + 4},${-h / 2} H${hw - 4} Q${hw + 3},${-h / 2} ${hw + 9},0 Q${hw + 3},${h / 2} ${hw - 4},${h / 2} H${-hw + 4} Q${-hw - 3},${h / 2} ${-hw - 9},0Z`;
+    return `<g transform="translate(${x},${y})">
+        <path d="${shape}" fill="${fill}" stroke="${QS}" stroke-width="1.1"/>
+        <path d="${shape}" fill="none" stroke="#9b2d20" stroke-width=".8" transform="scale(.9 .74)"/>
+        <text y="4.6" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="700" letter-spacing="1" fill="#2a1a0c">${esc(text)}</text>
+        <text y="${-h / 2 - 5}" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11.5" font-style="italic" font-weight="700" letter-spacing=".5" fill="#fbf3dc" style="paint-order: stroke" stroke="${QS}" stroke-width="3.2">${esc(sub)}</text>
+    </g>`;
+}
 function questMapHTML(f, beaten) {
-    const K = '#0a0a0a';
     const order = QREGIONS.flatMap((r, ri) => r.nodes.map((n, ni) => ({ n, ri, ni })));
     const curItem = order.find(x => !beaten.includes(x.n.id) && nodeOpen(x.ri, x.ni, f)) || order.filter(x => beaten.includes(x.n.id)).pop() || order[0];
     if (!questSel || !order.some(x => x.n.id === questSel)) questSel = curItem.n.id;
-    const pts = [[36, 726]].concat(order.map(x => QMAP_POS[x.n.id]));
-    // progress path: how far the hero has walked
+    const pts = [[40, 742]].concat(order.map(x => QMAP_POS[x.n.id]));
     const reachedIdx = order.findIndex(x => x.n.id === curItem.n.id);
     const walked = pts.slice(0, reachedIdx + 2);
     let svg = `<svg viewBox="0 0 ${QMAP_W} ${QMAP_H}" width="100%" class="block select-none" role="img" aria-label="Freedom Quest world map">
       <defs>
-        <linearGradient id="qm-land" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#7f9a5c"/><stop offset=".2" stop-color="#8ea36a"/><stop offset=".27" stop-color="#a39d86"/>
-          <stop offset=".52" stop-color="#9c9484"/><stop offset=".58" stop-color="#b98d5a"/><stop offset=".74" stop-color="#a87a4a"/>
-          <stop offset=".79" stop-color="#5e5852"/><stop offset="1" stop-color="#3e3a37"/></linearGradient>
-        <radialGradient id="qm-tree" cx=".35" cy=".35" r=".75"><stop offset="0" stop-color="#5f8f4e"/><stop offset=".7" stop-color="#355e33"/><stop offset="1" stop-color="#26472a"/></radialGradient>
-        <radialGradient id="qm-cave" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="#120c08"/><stop offset="1" stop-color="#3a2717"/></radialGradient>
-        <radialGradient id="qm-vignette" cx=".5" cy=".5" r=".75"><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#1c1917" stop-opacity=".45"/></radialGradient>
-        <filter id="qm-patches" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 -.55"/></filter>
-        <filter id="qm-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 .3  0 0 0 0 .24  0 0 0 0 .18  0 0 0 .35 0"/></filter>
-        <filter id="qm-blur6"><feGaussianBlur stdDeviation="6"/></filter>
-        <filter id="qm-mist" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
-        <filter id="qm-pin" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".45"/></filter>
-        <clipPath id="qm-avclip"><circle cx="0" cy="0" r="15"/></clipPath>
+        <pattern id="qm-water" width="10" height="8" patternUnits="userSpaceOnUse"><path d="M0,4 q2.5,-3 5,0 t5,0" fill="none" stroke="#c9dcef" stroke-width=".9"/><path d="M0,8 q2.5,-3 5,0 t5,0" fill="none" stroke="#8fb0d6" stroke-width=".7"/></pattern>
+        <filter id="qm-rough" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="2" seed="9" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/></filter>
+        <filter id="qm-paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 .55  0 0 0 0 .45  0 0 0 0 .3  0 0 0 .22 0"/></filter>
+        <clipPath id="qm-avclip"><circle cx="0" cy="0" r="14"/></clipPath>
       </defs>
       ${qmScenery()}
-      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#f5efe1" stroke-width="5" stroke-linecap="round" opacity=".55"/>
-      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#3f2f1f" stroke-width="2" stroke-dasharray="5 5" stroke-linecap="round" opacity=".85"/>
-      ${walked.length > 1 ? `<path d="${qmSmoothPath(walked)}" fill="none" stroke="#b45309" stroke-width="3.2" stroke-linecap="round"/>` : ''}`;
-    // mist over uncharted lands + cartographic labels
-    const LABEL_POS = [[150, 612], [258, 448], [116, 242], [104, 30]];
+      <rect width="${QMAP_W}" height="${QMAP_H}" filter="url(#qm-paper)"/>
+      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#f3e6c4" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+      <path d="${qmSmoothPath(pts)}" fill="none" stroke="#9b2d20" stroke-width="2.2" stroke-dasharray=".1 5.5" stroke-linecap="round"/>
+      ${walked.length > 1 ? `<path d="${qmSmoothPath(walked)}" fill="none" stroke="${QG}" stroke-width="3.6" stroke-linecap="round"/>` : ''}`;
+    // gold-lined clouds veil uncharted lands; gold cartouches name each land
+    const LABEL_POS = [[140, 622, 150], [252, 456, 170], [118, 238, 130], [110, 70, 156]];
     QREGIONS.forEach((r, ri) => {
         const [y0, y1] = QMAP_BANDS[ri], ro = regionOpen(ri, f), cleared = beaten.includes(r.nodes[2].id);
         if (!ro.open) {
+            const R = qmRng(200 + ri), cy = (y0 + y1) / 2;
             svg += `<clipPath id="qm-band${ri}"><rect x="0" y="${y0}" width="${QMAP_W}" height="${y1 - y0}"/></clipPath>
-                <linearGradient id="qm-fade${ri}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d6d0" stop-opacity="0"/><stop offset=".12" stop-color="#d9d6d0" stop-opacity=".5"/><stop offset=".88" stop-color="#d9d6d0" stop-opacity=".5"/><stop offset="1" stop-color="#d9d6d0" stop-opacity="0"/></linearGradient>
-                <g clip-path="url(#qm-band${ri})"><rect x="0" y="${y0}" width="${QMAP_W}" height="${y1 - y0}" fill="url(#qm-fade${ri})"/>
-                <g filter="url(#qm-mist)" opacity=".7">${[0, 1, 2, 3, 4].map(i => `<ellipse cx="${40 + i * 82}" cy="${(y0 + y1) / 2 + (i % 2 ? -14 : 12)}" rx="70" ry="${(y1 - y0) / 2 - 18}" fill="#f1efeb"/>`).join('')}</g></g>`;
+              <g clip-path="url(#qm-band${ri})"><rect x="0" y="${y0}" width="${QMAP_W}" height="${y1 - y0}" fill="#f3ead6" opacity=".28"/>
+              ${[0, 1, 2, 3, 4, 5, 6].map(i => qmCloud(10 + i * 62 + R() * 12, cy + (i % 2 ? -36 : 28) + (R() - .5) * 18, 1.6 + R() * .4, '#f8f2e4', QG)).join('')}</g>`;
         }
-        const [lx, ly] = LABEL_POS[ri], roman = ['I', 'II', 'III', 'IV'][ri];
-        const name = r.name.replace(/^The /, '').toUpperCase();
-        const ink = ro.open ? '#1f140a' : '#3f3a36';
-        svg += `<g font-family="Georgia, 'Times New Roman', serif" text-anchor="middle" style="paint-order: stroke" stroke="#fbf7ee" stroke-width="5" stroke-linejoin="round">
-            <text x="${lx}" y="${ly}" font-size="12" letter-spacing="1.5" font-weight="700" fill="${cleared ? '#14532d' : ink}" font-style="italic">Act ${roman}${cleared ? ' · Cleared ✓' : !ro.open ? ' · Uncharted' : ''}</text>
-            <text x="${lx}" y="${ly + 21}" font-size="18" letter-spacing="1.5" font-weight="700" fill="${ink}">${esc(name)}</text></g>`;
+        const [lx, ly, lw] = LABEL_POS[ri], roman = ['I', 'II', 'III', 'IV'][ri];
+        svg += qmCartouche(lx, ly, lw, r.name.replace(/^The /, '').toUpperCase(), 'Act ' + roman + (cleared ? ' · cleared ✓' : !ro.open ? ' · uncharted' : ''), cleared ? 'cleared' : ro.open ? 'open' : 'locked');
     });
-    // nodes
+    // gold-rimmed medallions
     order.forEach(({ n, ri, ni }, idx) => {
         const [x, y] = QMAP_POS[n.id], done = beaten.includes(n.id), open = nodeOpen(ri, ni, f), sel = n.id === questSel;
-        const r = n.boss ? 15 : 12, fill = done ? '#2f6f4f' : open ? '#c2410c' : '#57534e';
+        const r = n.boss ? 14 : 11.5, fill = done ? '#2f6b3a' : open ? '#9b2d20' : '#7d7466';
         svg += `<g class="qnode" data-node="${n.id}" onclick="selectQuestNode('${n.id}')" role="button" tabindex="0" aria-label="${esc(n.name)}${done ? ', defeated' : open ? ', ready' : ', locked'}" style="cursor:pointer">
             <circle cx="${x}" cy="${y}" r="${r + 16}" fill="transparent"/>
-            ${open && !done ? `<circle cx="${x}" cy="${y}" r="${r + 6}" fill="none" stroke="#c2410c" stroke-width="2.5" class="qm-pulse"/>` : ''}
-            ${sel ? `<circle cx="${x}" cy="${y}" r="${r + 5}" fill="none" stroke="#f5efe1" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${r + 7.5}" fill="none" stroke="#1c1917" stroke-width="1.2" stroke-dasharray="3 3"/>` : ''}
-            ${n.boss ? `<circle cx="${x}" cy="${y}" r="${r + 3.5}" fill="none" stroke="${fill}" stroke-width="1.5" opacity=".9"/>` : ''}
-            <circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#f5efe1" stroke-width="2.5" filter="url(#qm-pin)"/>
-            ${done ? `<path d="M${x - 5},${y} l3.8,4 7,-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`
-                   : `<text x="${x}" y="${y + (n.boss ? 5 : 4.5)}" text-anchor="middle" font-family="Georgia, serif" font-size="${n.boss ? 15 : 13}" font-weight="700" fill="#fff">${idx + 1}</text>`}
-            ${n.boss ? `<g transform="translate(${x},${y + r + 13})"><rect x="-19" y="-9" width="38" height="16" rx="8" fill="#7f1d1d" stroke="#fbf7ee" stroke-width="1.5"/><text y="3.8" text-anchor="middle" font-family="Georgia, serif" font-size="10.5" font-weight="700" letter-spacing="1" fill="#fff">BOSS</text></g>` : ''}
+            ${open && !done ? `<circle cx="${x}" cy="${y}" r="${r + 6}" fill="none" stroke="${QG}" stroke-width="2.5" class="qm-pulse"/>` : ''}
+            ${sel ? `<circle cx="${x}" cy="${y}" r="${r + 6}" fill="none" stroke="#f5ecd7" stroke-width="1.6" stroke-dasharray="3 3"/>` : ''}
+            <circle cx="${x + 1.5}" cy="${y + 2}" r="${r + 2.5}" fill="#000" opacity=".3"/>
+            <circle cx="${x}" cy="${y}" r="${r + 2.5}" fill="${QG}" stroke="${QS}" stroke-width="1"/>
+            <circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${QS}" stroke-width=".8"/>
+            ${n.boss ? Array.from({ length: 8 }, (_, k) => { const a = k * Math.PI / 4; return `<circle cx="${(x + Math.cos(a) * (r + 2.5)).toFixed(1)}" cy="${(y + Math.sin(a) * (r + 2.5)).toFixed(1)}" r="1.6" fill="#f5ecd7" stroke="${QS}" stroke-width=".5"/>`; }).join('') : ''}
+            ${done ? `<path d="M${x - 5},${y} l3.6,3.8 6.6,-7.6" fill="none" stroke="#f5ecd7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`
+                   : `<text x="${x}" y="${y + (n.boss ? 5 : 4.5)}" text-anchor="middle" font-family="Georgia, serif" font-size="${n.boss ? 14 : 12.5}" font-weight="700" fill="#f8efd8">${idx + 1}</text>`}
+            ${n.boss ? `<text x="${x}" y="${y + r + 15}" text-anchor="middle" font-family="Georgia, serif" font-size="10.5" font-style="italic" font-weight="700" fill="#fbf3dc" style="paint-order: stroke" stroke="${QS}" stroke-width="3">Boss</text>` : ''}
         </g>`;
     });
-    // hero token
-    const [hx, hy] = QMAP_POS[curItem.n.id], hr = curItem.n.boss ? 15 : 12, ty = hy - hr - 26;
-    const av = avatarSVG(avatarOf()).replace(/<svg[^>]*?viewBox=/, `<svg x="-15" y="-15" width="30" height="30" viewBox=`);
-    svg += `<g class="qm-hero" pointer-events="none"><g transform="translate(${hx},${ty})" filter="url(#qm-pin)"><path d="M-6,13 L0,${hr + 6} L6,13Z" fill="#f5efe1"/><circle r="17" fill="#f5efe1"/><g clip-path="url(#qm-avclip)"><circle r="15" fill="#d6d3d1"/>${av}</g></g></g>`;
+    // hero in a gold medallion
+    const [hx, hy] = QMAP_POS[curItem.n.id], hr = curItem.n.boss ? 14 : 11.5, ty = hy - hr - 26;
+    const av = avatarSVG(avatarOf()).replace(/<svg[^>]*?viewBox=/, `<svg x="-14" y="-14" width="28" height="28" viewBox=`);
+    svg += `<g class="qm-hero" pointer-events="none"><g transform="translate(${hx},${ty})"><path d="M-5,14 L0,${hr + 8} L5,14Z" fill="${QG}" stroke="${QS}" stroke-width=".8"/><circle r="17.5" fill="${QG}" stroke="${QS}" stroke-width="1"/><g clip-path="url(#qm-avclip)"><circle r="14" fill="#f3e6c4"/>${av}</g></g></g>`;
     svg += `</svg>`;
 
     // selected node panel
@@ -4589,7 +4643,7 @@ function questMapHTML(f, beaten) {
         ${sopen || sdone
             ? `<button type="button" onclick="startBattle('${sn.id}')" class="w-full py-3 btn text-sm ${sdone ? 'bg-white dark:bg-neutral-800' : 'bg-rose-400 text-neutral-950'} pop-btn">${sdone ? '↻ Replay battle' : '⚔️ Battle!'}</button>`
             : `<p class="text-xs font-black uppercase text-neutral-500 p-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-950 border-2 border-dashed border-neutral-400">🔒 ${esc(lockWhy)}</p>`}`;
-    return `<div class="card pop-card !p-0 overflow-hidden"><div class="qmap">${svg}</div></div>
+    return `<div class="rounded-2xl overflow-hidden shadow-[0_6px_18px_rgba(0,0,0,0.25)]"><div class="qmap">${svg}</div></div>
         <div id="quest-sel" class="card pop-card space-y-2.5">${panel}</div>`;
 }
 window.selectQuestNode = function (id) { questSel = id; renderQuest(); const p = $('quest-sel'); if (p) p.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
